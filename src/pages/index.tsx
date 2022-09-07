@@ -21,7 +21,8 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-          Get started by clicking on one of the blocks below or <a href="/reports">browse existing reports</a>
+          Get started by clicking on one of the blocks below or{` `}
+          <a href="/reports">browse existing reports</a>
         </p>
 
         <div className={styles.grid}>
@@ -32,21 +33,17 @@ export default function Home() {
 
           <a href="/reports/new?type=flow" className={styles.card}>
             <h2>Flows &rarr;</h2>
-            <p>Discover common patterns and workflows within your product usage!</p>
+            <p>
+              Discover common patterns and workflows within your product usage!
+            </p>
           </a>
 
-          <a
-            href="/reports/new?type=retention"
-            className={styles.card}
-          >
+          <a href="/reports/new?type=retention" className={styles.card}>
             <h2>Retention &rarr;</h2>
             <p>Analyze why your users stick around and when they leave.</p>
           </a>
 
-          <a
-            href="/reports/new?type=sql"
-            className={styles.card}
-          >
+          <a href="/reports/new?type=sql" className={styles.card}>
             <h2>SQL Runner &rarr;</h2>
             <p>
               Write custom quries using SQL, dbt refs and macros, and Jinja.
