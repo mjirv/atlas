@@ -17,40 +17,39 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://github.com/mjirv/atlas">Atlas</a>
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{` `}
-          <code className={styles.code}>src/pages/index.tsx</code>
+          Get started by clicking on one of the blocks below or <a href="/reports">browse existing reports</a>
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
+          <a href="/reports/new?type=funnel" className={styles.card}>
+            <h2>Funnels &rarr;</h2>
+            <p>Analyze funnels and what leads users to convert or drop off.</p>
           </a>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
+          <a href="/reports/new?type=flow" className={styles.card}>
+            <h2>Flows &rarr;</h2>
+            <p>Discover common patterns and workflows within your product usage!</p>
           </a>
 
           <a
-            href="https://vercel.com/new?utm_source=typescript-nextjs-starter"
+            href="/reports/new?type=retention"
             className={styles.card}
           >
-            <h2>Deploy &rarr;</h2>
+            <h2>Retention &rarr;</h2>
+            <p>Analyze why your users stick around and when they leave.</p>
+          </a>
+
+          <a
+            href="/reports/new?type=sql"
+            className={styles.card}
+          >
+            <h2>SQL Runner &rarr;</h2>
             <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
+              Write custom quries using SQL, dbt refs and macros, and Jinja.
             </p>
           </a>
         </div>
