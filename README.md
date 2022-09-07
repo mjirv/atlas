@@ -5,7 +5,7 @@
 <br />
 
 <div align="center"><strong>Open-source product analytics for the modern data stack</strong></div>
-<div align="center">Built on top of dbt and your data warehouse, Atlas replaces Mixpanel or Amplitude and lets you analyze funnels, retention, and user flows.</div>
+<div align="center">Atlas replaces Mixpanel or Amplitude and lets you analyze funnels, retention, and user flows.</div>
 
 <br />
 
