@@ -1,14 +1,14 @@
 {
-  "name": "typescript-nextjs-starter",
-  "description": "A TypeScript starter for Next.js that includes all you need to build amazing projects",
-  "version": "1.0.0",
+  "name": "atlas",
+  "description": "An open-source product analytics tool for the modern data stack",
+  "version": "0.0.1-alpha",
   "private": true,
-  "author": "João Pedro Schmitz <hey@joaopedro.dev> (@jpedroschmitz)",
+  "author": "Michael Irvine <michael.j.irvine@gmail.com> (@mjirv)",
   "license": "MIT",
   "keywords": [
-    "nextjs",
-    "starter",
-    "typescript"
+    "product",
+    "analytics",
+    "data"
   ],
   "scripts": {
     "dev": "next",
