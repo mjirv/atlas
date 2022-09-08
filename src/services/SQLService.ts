@@ -8,7 +8,7 @@ interface SQLService {
 class DbtSQLService implements SQLService {
   client: IDbtClient
   constructor(dbtProjectPath: string) {
-    this.client = new DbtClient({ dbtProjectPath })
+    this.client = new DbtClient({ dbtProjectPath, quiet: true })
   }
 
   run = async (query: string) => {

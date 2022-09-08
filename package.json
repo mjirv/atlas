@@ -26,7 +26,7 @@
     ]
   },
   "dependencies": {
-    "dbt_ts_client": "0.0.1-alpha-rc.2",
+    "dbt_ts_client": "0.0.1-alpha-rc.3",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"

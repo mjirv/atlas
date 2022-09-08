@@ -993,10 +993,10 @@ dargs@^7.0.0:
   resolved "https://registry.yarnpkg.com/dargs/-/dargs-7.0.0.tgz#04015c41de0bcb69ec84050f3d9be0caf8d6d5cc"
   integrity sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg==
 
-dbt_ts_client@0.0.1-alpha-rc.2:
-  version "0.0.1-alpha-rc.2"
-  resolved "https://registry.yarnpkg.com/dbt_ts_client/-/dbt_ts_client-0.0.1-alpha-rc.2.tgz#9a377372c1796f8959b8d9df51114985c6631827"
-  integrity sha512-ni4VJodmJ+HplzGn0LI6CQ/2mbdUCaqTbvK8862AE8BYsSPmpJ8KSuTg8BiG14Xe2eQQa+xQopxzZbcIOoVRsA==
+dbt_ts_client@0.0.1-alpha-rc.3:
+  version "0.0.1-alpha-rc.3"
+  resolved "https://registry.yarnpkg.com/dbt_ts_client/-/dbt_ts_client-0.0.1-alpha-rc.3.tgz#713dcd3efedfc0c96d0d82069c8122d2909d3480"
+  integrity sha512-A4phcEXmmrYhqxJ/0btSCA69afN3dTIwC8pFvsrpMR8zvON1JJEvF4Wa0YQqAnP2XGUrQxX5IqpG5oXHK2u5GA==
   dependencies:
     "@types/node" "^18.6.4"
     typescript "^4.7.4"
