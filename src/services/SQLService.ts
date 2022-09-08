@@ -27,4 +27,4 @@ if (!process.env.DBT_PROJECT_PATH) {
   throw new Error(`env var DBT_PROJECT_PATH must be provided`)
 }
 
-export default new DbtSQLService(process.env.DBT_SQL_PATH as string)
+export default new DbtSQLService(process.env.DBT_PROJECT_PATH)
