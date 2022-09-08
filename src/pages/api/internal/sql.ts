@@ -10,7 +10,7 @@ export default async function handler(
   res: NextApiResponse<Data>,
 ) {
   const query: string = req.body
-  const { data, error } = await sqlService.sqlQuery(query)
+  const { data, error } = await sqlService.run(query)
   if (error) {
     return res.status(error.status).end()
   }

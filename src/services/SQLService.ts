@@ -2,7 +2,7 @@ import { AtlasError } from '@/types/AtlasError'
 import DbtClient, { IDbtClient } from 'dbt_ts_client'
 
 interface SQLService {
-  sqlQuery: (query: string) => Promise<{ data: string } | { error: AtlasError }>
+  run: (query: string) => Promise<{ data: string } | { error: AtlasError }>
 }
 
 class DbtSQLService implements SQLService {
@@ -11,7 +11,7 @@ class DbtSQLService implements SQLService {
     this.client = new DbtClient({ dbtProjectPath })
   }
 
-  sqlQuery = async (query: string) => {
+  run = async (query: string) => {
     if (!query) {
       return { error: { status: 400 } }
     }
