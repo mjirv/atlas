@@ -1,8 +1,17 @@
+import { EventStream } from '@/models/EventStream'
 import { AtlasError } from '@/types/AtlasError'
 import DbtClient, { IDbtClient } from 'dbt_ts_client'
 
+type SQLResponse = { data: string } | { error: AtlasError }
+
+interface FunnelParams {
+  steps: Record<'event_type', string>[]
+  eventStream: EventStream
+}
+
 interface SQLService {
-  run: (query: string) => Promise<{ data: string } | { error: AtlasError }>
+  runSql: (query: string) => Promise<SQLResponse>
+  runFunnel: (params: FunnelParams) => Promise<SQLResponse>
 }
 
 class DbtSQLService implements SQLService {
@@ -11,7 +20,7 @@ class DbtSQLService implements SQLService {
     this.client = new DbtClient({ dbtProjectPath, quiet: true })
   }
 
-  run = async (query: string) => {
+  runSql = async (query: string) => {
     if (!query) {
       return { error: { status: 400 } }
     }
@@ -20,6 +29,11 @@ class DbtSQLService implements SQLService {
       args: { query },
     })
     return { data }
+  }
+
+  runFunnel = async (params: FunnelParams) => {
+    const query = `{{ dbt_product_analytics.funnel(steps=${params.steps}, event_stream=${params.eventStream}) }}`
+    return this.runSql(query)
   }
 }
 

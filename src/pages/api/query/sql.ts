@@ -5,6 +5,7 @@ type Data = {
   data: string
 }
 
+// example: curl -d "{ \"query\": \"select 1 as res\" }" -H "Accept: application/json" -H "Content-Type: application/json" localhost:3000/api/internal/sql
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
@@ -13,7 +14,7 @@ export default async function handler(
     return res.status(405).end()
   }
   const { query } = req.body
-  const { data, error } = await sqlService.run(query)
+  const { data, error } = await sqlService.runSql(query)
   if (error) {
     return res.status(error.status).end()
   }
