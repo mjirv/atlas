@@ -32,7 +32,9 @@ class DbtSQLService implements SQLService {
   }
 
   runFunnel = async (params: FunnelParams) => {
-    const query = `{{ dbt_product_analytics.funnel(steps=${params.steps}, event_stream=${params.eventStream}) }}`
+    const query = `{{ dbt_product_analytics.funnel(steps=${JSON.stringify(
+      params.steps,
+    )}, event_stream=${params.eventStream}) }}`
     return this.runSql(query)
   }
 }

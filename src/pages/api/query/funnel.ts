@@ -5,7 +5,7 @@ type Data = {
   data: string
 }
 
-// example: curl -d "{ \"query\": \"select 1 as res\" }" -H "Accept: application/json" -H "Content-Type: application/json" localhost:3000/api/internal/sql
+// example: curl -d "{ \"query\": \"select 1 as res\" }" -H "Accept: application/json" -H "Content-Type: application/json" localhost:3000/api/query/funnel
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
