@@ -1,4 +1,4 @@
-interface EventStreamParams {
+interface EventStreamMacroParams {
   from: string
   eventTypeCol: string
   userIdCol: string
@@ -7,14 +7,18 @@ interface EventStreamParams {
   endDate?: Date
 }
 
-export class EventStream {
+interface EventStreamRefParams {
+  ref: string
+}
+
+export class EventStreamMacro {
   from: string
   eventTypeCol: string
   userIdCol: string
   dateCol: string
   startDate?: Date
   endDate?: Date
-  constructor(params: EventStreamParams) {
+  constructor(params: EventStreamMacroParams) {
     this.from = params.from
     this.eventTypeCol = params.eventTypeCol
     this.userIdCol = params.userIdCol
@@ -41,3 +45,16 @@ export class EventStream {
         }`
   }
 }
+
+export class EventStreamRef {
+  ref: string
+  constructor(params: EventStreamRefParams) {
+    this.ref = params.ref
+  }
+
+  toString() {
+    return `ref('${this.ref}')`
+  }
+}
+
+export type EventStream = EventStreamMacro | EventStreamRef

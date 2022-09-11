@@ -5,7 +5,15 @@ type Data = {
   data: string
 }
 
-// example: curl -d "{ \"query\": \"select 1 as res\" }" -H "Accept: application/json" -H "Content-Type: application/json" localhost:3000/api/query/funnel
+/**
+ * 
+ * @example curl --location --request POST 'http://localhost:3000/api/query/funnel' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "eventStream": "ref('\''order_events'\'')",
+        "steps": [{ "event_type": "placed" }, { "event_type": "completed" }, { "event_type": "returned" }]
+    }'
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>,
