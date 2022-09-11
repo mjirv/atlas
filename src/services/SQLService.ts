@@ -17,16 +17,33 @@ interface FlowsParams {
   topN?: number
 }
 
+interface RetentionParams {
+  eventStream: EventStream
+  firstAction: string
+  secondAction: string
+  startDate?: Date
+  periods?: number[]
+  periodType?: string
+  dimensions?: string
+}
+
 interface SQLService {
   runSql: (query: string) => Promise<SQLResponse>
   runFunnel: (params: FunnelParams) => Promise<SQLResponse>
   runFlows: (params: FlowsParams) => Promise<SQLResponse>
 }
 
-const optionalParamToString = (
-  param_name: string,
-  param: string | number | undefined,
-) => (param ? `, ${param_name}=${JSON.stringify(param)}` : ``)
+interface OptionalParam {
+  name: string
+  param: string | number | Date | number[] | undefined
+}
+
+const optionalParamToString = (param: OptionalParam) =>
+  param.param ? `, ${param.name}=${JSON.stringify(param.param)}` : ``
+
+const optionalParamsToString = (params: OptionalParam[]) => {
+  return params.map((param) => optionalParamToString(param)).join(``)
+}
 
 class DbtSQLService implements SQLService {
   client: IDbtClient
@@ -57,13 +74,27 @@ class DbtSQLService implements SQLService {
       params.eventStream
     }, primary_event=${JSON.stringify(
       params.primaryEvent,
-    )}${optionalParamToString(
-      `n_events_from`,
-      params.nEventsFrom,
-    )}${optionalParamToString(
-      `before_or_after`,
-      params.beforeOrAfter,
-    )}${optionalParamToString(`top_n`, params.topN)}) }}`
+    )}${optionalParamsToString([
+      { name: `n_events_from`, param: params.nEventsFrom },
+      { name: `before_or_after`, param: params.beforeOrAfter },
+      { name: `top_n`, param: params.topN },
+    ])}) }}`
+    return this.runSql(query)
+  }
+
+  runRetention = async (params: RetentionParams) => {
+    const query = `{{ dbt_product_analytics.retention(event_stream=${
+      params.eventStream
+    }, first_action=${JSON.stringify(
+      params.firstAction,
+    )}, second_action=${JSON.stringify(
+      params.secondAction,
+    )}${optionalParamsToString([
+      { name: `start_date`, param: params.startDate },
+      { name: `periods`, param: params.periods },
+      { name: `period_type`, param: params.periodType },
+      { name: `dimensions`, param: params.dimensions },
+    ])}) }}`
     return this.runSql(query)
   }
 }
