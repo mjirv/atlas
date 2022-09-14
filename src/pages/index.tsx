@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 
 import styles from '@/styles/Home.module.css'
+import { Heading, Text } from '@chakra-ui/react'
 
 export default function Home() {
   return (
@@ -16,38 +17,50 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
+        <Heading as="h1" size="3xl" className={styles.title}>
           Welcome to <a href="https://github.com/mjirv/atlas">Atlas</a>
-        </h1>
+        </Heading>
 
-        <p className={styles.description}>
+        <Text className={styles.description}>
           Get started by clicking on one of the blocks below or{` `}
           <a href="/reports">browse existing reports</a>
-        </p>
+        </Text>
 
         <div className={styles.grid}>
           <a href="/reports/new?type=funnel" className={styles.card}>
-            <h2>Funnels &rarr;</h2>
-            <p>Analyze funnels and what leads users to convert or drop off.</p>
+            <Heading as="h2" size="xl">
+              Funnels &rarr;
+            </Heading>
+            <Text>
+              Analyze funnels and what leads users to convert or drop off.
+            </Text>
           </a>
 
           <a href="/reports/new?type=flow" className={styles.card}>
-            <h2>Flows &rarr;</h2>
-            <p>
+            <Heading as="h2" size="xl">
+              Flows &rarr;
+            </Heading>
+            <Text>
               Discover common patterns and workflows within your product usage!
-            </p>
+            </Text>
           </a>
 
           <a href="/reports/new?type=retention" className={styles.card}>
-            <h2>Retention &rarr;</h2>
-            <p>Analyze why your users stick around and when they leave.</p>
+            <Heading as="h2" size="xl">
+              Retention &rarr;
+            </Heading>
+            <Text>
+              Analyze why your users stick around and when they leave.
+            </Text>
           </a>
 
           <a href="/reports/new?type=sql" className={styles.card}>
-            <h2>SQL Runner &rarr;</h2>
-            <p>
+            <Heading as="h2" size="xl">
+              SQL Runner &rarr;
+            </Heading>
+            <Text>
               Write custom quries using SQL, dbt refs and macros, and Jinja.
-            </p>
+            </Text>
           </a>
         </div>
       </main>
