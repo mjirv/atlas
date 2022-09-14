@@ -59,7 +59,7 @@ class DbtSQLService implements SQLService {
       operation: `dbt_product_analytics._run_query`,
       args: { query },
     })
-    return { data }
+    return { data: JSON.parse(data) }
   }
 
   runFunnel = async (params: FunnelParams) => {

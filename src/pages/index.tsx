@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import styles from '@/styles/Home.module.css'
 import { Heading, Text } from '@chakra-ui/react'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -27,14 +28,14 @@ export default function Home() {
         </Text>
 
         <div className={styles.grid}>
-          <a href="/reports/new?type=funnel" className={styles.card}>
+          <Link href="/reports/funnel" className={styles.card}>
             <Heading as="h2" size="xl">
               Funnels &rarr;
             </Heading>
             <Text>
               Analyze funnels and what leads users to convert or drop off.
             </Text>
-          </a>
+          </Link>
 
           <a href="/reports/new?type=flow" className={styles.card}>
             <Heading as="h2" size="xl">
