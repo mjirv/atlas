@@ -28,13 +28,15 @@ export default function Home() {
         </Text>
 
         <div className={styles.grid}>
-          <Link href="/reports/funnel" className={styles.card}>
-            <Heading as="h2" size="xl">
-              Funnels &rarr;
-            </Heading>
-            <Text>
-              Analyze funnels and what leads users to convert or drop off.
-            </Text>
+          <Link href="/reports/funnel">
+            <a className={styles.card}>
+              <Heading as="h2" size="xl">
+                Funnels &rarr;
+              </Heading>
+              <Text>
+                Analyze funnels and what leads users to convert or drop off.
+              </Text>
+            </a>
           </Link>
 
           <a href="/reports/new?type=flow" className={styles.card}>
