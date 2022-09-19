@@ -2,11 +2,15 @@ import { DataTable } from '@/components/DataTable'
 import { Spinner } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
+import FunnelVizComponent from '@/components/Funnel'
+import { useRouter } from 'next/router'
 
 export default function Funnel() {
   const [data, setData] = useState(null)
   const [columns, setColumns] = useState(null)
   const [isLoading, setLoading] = useState(false)
+  const router = useRouter()
+  const { reportType } = router.query
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -47,6 +51,17 @@ export default function Funnel() {
   return isLoading || !data ? (
     <Spinner size="xl" />
   ) : (
-    <DataTable columns={columns} data={data} />
+    <>
+      <div
+        style={{
+          width: `100%`,
+          height: `500px`,
+          display: `block`,
+        }}
+      >
+        <FunnelVizComponent data={data} />
+      </div>
+      <DataTable columns={columns} data={data} />
+    </>
   )
 }
