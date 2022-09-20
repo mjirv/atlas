@@ -1,11 +1,12 @@
 import { DataTable } from '@/components/DataTable'
 import { Spinner } from '@chakra-ui/react'
 import { createColumnHelper } from '@tanstack/react-table'
-import { useCallback, useEffect, useState } from 'react'
-import FunnelVizComponent from '@/components/Funnel'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import Funnel from '@/components/Funnel'
 import { useRouter } from 'next/router'
+import Flows from '@/components/Flows'
 
-export default function Funnel() {
+export default function Report() {
   const [data, setData] = useState(null)
   const [columns, setColumns] = useState(null)
   const [isLoading, setLoading] = useState(false)
@@ -15,19 +16,25 @@ export default function Funnel() {
   const fetchData = useCallback(async () => {
     setLoading(true)
     const query = {
-      eventStream: `ref('order_events')`,
-      steps: [
-        { event_type: `placed` },
-        { event_type: `completed` },
-        { event_type: `returned` },
-      ],
+      funnel: {
+        eventStream: `ref('order_events')`,
+        steps: [
+          { event_type: `placed` },
+          { event_type: `completed` },
+          { event_type: `returned` },
+        ],
+      },
+      flows: {
+        eventStream: `ref('order_events')`,
+        primaryEvent: `placed`,
+      },
     }
-    const res = await fetch(`/api/query/funnel`, {
+    const res = await fetch(`/api/query/${reportType}`, {
       headers: {
         'Content-Type': `application/json`,
       },
       method: `post`,
-      body: JSON.stringify(query),
+      body: JSON.stringify(query[reportType as 'funnel' | 'flows']),
     })
 
     const { data } = await res.json()
@@ -42,7 +49,21 @@ export default function Funnel() {
     setData(data)
     setColumns(columns)
     setLoading(false)
-  }, [])
+  }, [reportType])
+
+  const FunnelVizComponent = useMemo(() => {
+    switch (reportType) {
+      case `funnel`: {
+        return Funnel
+      }
+      case `flows`: {
+        return Flows
+      }
+      default: {
+        return Funnel
+      }
+    }
+  }, [reportType])
 
   useEffect(() => {
     fetchData()

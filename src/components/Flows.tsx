@@ -3,23 +3,64 @@ import { ResponsiveSankey, DefaultNode, DefaultLink } from '@nivo/sankey'
 import { useMemo } from 'react'
 
 const Flows = ({ data }: { data: FlowsData }) => {
-  const nodes: DefaultNode[] = useMemo(
-    () =>
-      data.flatMap((flow) =>
-        Array.from(
-          new Set(
-            Object.values(flow).filter((value) => typeof value === `string`),
-          ),
-        ).map((value) => ({
-          id: value as string,
-        })),
-      ),
-    [data],
-  )
+  /*
+  [        
+    {
+        "event_0": "placed",
+        "event_1": "completed",
+        "event_2": "returned",
+        "event_3": null,
+        "event_4": null,
+        "event_5": null,
+        "n_events": 1
+    }]
+  */
 
   const links: DefaultLink[] = useMemo(() => {
-    return []
-  }, [])
+    const linkObject = {} as Record<string, Record<string, number>>
+    data.forEach((flow) => {
+      const eventList = Object.entries(flow)
+      eventList.forEach(([_, event], index) => {
+        if (typeof event === `number`) {
+          return
+        }
+        if (event === null && index > 0 && eventList[index - 1][1] === null) {
+          return
+        }
+
+        linkObject[`${index}. ${event}`] =
+          linkObject[`${index}. ${event}`] || {}
+        if (index > 0) {
+          linkObject[`${index - 1}. ${eventList[index - 1][1]}`][
+            `${index}. ${event}`
+          ] =
+            (linkObject[`${index - 1}. ${eventList[index - 1][1]}`][
+              `${index}. ${event}`
+            ] || 0) + flow.n_events
+        }
+      })
+    })
+    return Object.entries(linkObject).flatMap(([source, targets]) =>
+      Object.entries(targets).map(([target, value]) => ({
+        source,
+        target,
+        value,
+      })),
+    )
+  }, [data])
+
+  const nodes: DefaultNode[] = useMemo(
+    () =>
+      Array.from(
+        new Set([
+          ...links.map((link) => link.source),
+          ...links.map((link) => link.target),
+        ]),
+      ).map((node) => ({
+        id: node,
+      })),
+    [links],
+  )
 
   return (
     <ResponsiveSankey
