@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import Funnel from '@/components/Funnel'
 import { useRouter } from 'next/router'
 import Flows from '@/components/Flows'
+import Retention from '@/components/Retention'
 
 export default function Report() {
   const [data, setData] = useState(null)
@@ -27,6 +28,12 @@ export default function Report() {
       flows: {
         eventStream: `ref('order_events')`,
         primaryEvent: `placed`,
+      },
+      retention: {
+        eventStream: `ref('order_events')`,
+        firstAction: `completed`,
+        secondAction: `completed`,
+        startDate: `2018-01-17`,
       },
     }
     const res = await fetch(`/api/query/${reportType}`, {
@@ -51,13 +58,16 @@ export default function Report() {
     setLoading(false)
   }, [reportType])
 
-  const FunnelVizComponent = useMemo(() => {
+  const Visualization = useMemo(() => {
     switch (reportType) {
       case `funnel`: {
         return Funnel
       }
       case `flows`: {
         return Flows
+      }
+      case `retention`: {
+        return Retention
       }
       default: {
         return Funnel
@@ -80,7 +90,7 @@ export default function Report() {
           display: `block`,
         }}
       >
-        <FunnelVizComponent data={data} />
+        <Visualization data={data} />
       </div>
       <DataTable columns={columns} data={data} />
     </>
