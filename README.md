@@ -28,16 +28,20 @@
 - Retention
 - SQL runner with dbt/Jinja support
 
-## Quick Start
-
-TK
+### Requirements
+* A [dbt project](https://getdbt.com) (running locally) with the [dbt_product_analytics](https://hub.getdbt.com/mjirv/dbt_product_analytics/latest/) package instealled
+* NodeJS
 
 ### Development
 
-To start the project locally, run:
+1. Add a file called `.env.local` with `DBT_PROJECT_PATH` pointing to the root of your local dbt project. For example:
+```
+DBT_PROJECT_PATH=/Users/mjirv/git_repos/dbt_product_analytics/integration_tests
+```
+2. To start the project locally, run:
 
 ```bash
-pnpm dev
+yarn dev
 ```
 
 Open `http://localhost:3000` with your browser to see the result.
