@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/26466516/141659551-d7ba5630-7200-46fe-863b-87818dae970a.png" alt="Next.js TypeScript Starter">
-</p>
-
-<br />
+<h1 align="center">Atlas</h1>
 
 <div align="center"><strong>Open-source product analytics for the modern data stack</strong></div>
 <div align="center">Atlas replaces Mixpanel or Amplitude and lets you analyze funnels, retention, and user flows.</div>
