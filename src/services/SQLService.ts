@@ -22,9 +22,10 @@ interface RetentionParams {
   firstAction: string
   secondAction: string
   startDate?: Date
+  endDate?: Date
   periods?: number[]
   periodType?: string
-  dimensions?: string
+  groupBy?: string
 }
 
 interface SQLService {
@@ -59,7 +60,7 @@ class DbtSQLService implements SQLService {
       operation: `dbt_product_analytics._run_query`,
       args: { query },
     })
-    return { data }
+    return { data: JSON.parse(data) }
   }
 
   runFunnel = async (params: FunnelParams) => {
@@ -91,9 +92,10 @@ class DbtSQLService implements SQLService {
       params.secondAction,
     )}${optionalParamsToString([
       { name: `start_date`, param: params.startDate },
+      { name: `end_date`, param: params.endDate },
       { name: `periods`, param: params.periods },
       { name: `period_type`, param: params.periodType },
-      { name: `dimensions`, param: params.dimensions },
+      { name: `group_by`, param: params.groupBy },
     ])}) }}`
     return this.runSql(query)
   }

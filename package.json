@@ -26,7 +26,17 @@
     ]
   },
   "dependencies": {
+    "@chakra-ui/icons": "2.0.9",
+    "@chakra-ui/react": "2.3.2",
+    "@emotion/react": "11.10.4",
+    "@emotion/styled": "11.10.4",
+    "@nivo/core": "0.80.0",
+    "@nivo/funnel": "0.80.0",
+    "@nivo/line": "0.80.0",
+    "@nivo/sankey": "0.80.0",
+    "@tanstack/react-table": "8.5.13",
     "dbt_ts_client": "0.0.1-alpha-rc.3",
+    "framer-motion": "7.3.4",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0"
