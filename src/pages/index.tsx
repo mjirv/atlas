@@ -39,32 +39,39 @@ export default function Home() {
             </a>
           </Link>
 
-          <a href="/reports/new?type=flow" className={styles.card}>
-            <Heading as="h2" size="xl">
-              Flows &rarr;
-            </Heading>
-            <Text>
-              Discover common patterns and workflows within your product usage!
-            </Text>
-          </a>
+          <Link href="/reports/new?type=flow">
+            <a className={styles.card}>
+              <Heading as="h2" size="xl">
+                Flows &rarr;
+              </Heading>
+              <Text>
+                Discover common patterns and workflows within your product
+                usage!
+              </Text>
+            </a>
+          </Link>
 
-          <a href="/reports/new?type=retention" className={styles.card}>
-            <Heading as="h2" size="xl">
-              Retention &rarr;
-            </Heading>
-            <Text>
-              Analyze why your users stick around and when they leave.
-            </Text>
-          </a>
+          <Link href="/reports/new?type=retention">
+            <a className={styles.card}>
+              <Heading as="h2" size="xl">
+                Retention &rarr;
+              </Heading>
+              <Text>
+                Analyze why your users stick around and when they leave.
+              </Text>
+            </a>
+          </Link>
 
-          <a href="/reports/new?type=sql" className={styles.card}>
-            <Heading as="h2" size="xl">
-              SQL Runner &rarr;
-            </Heading>
-            <Text>
-              Write custom quries using SQL, dbt refs and macros, and Jinja.
-            </Text>
-          </a>
+          <Link href="/reports/new?type=sql">
+            <a className={styles.card}>
+              <Heading as="h2" size="xl">
+                SQL Runner &rarr;
+              </Heading>
+              <Text>
+                Write custom quries using SQL, dbt refs and macros, and Jinja.
+              </Text>
+            </a>
+          </Link>
         </div>
       </main>
 

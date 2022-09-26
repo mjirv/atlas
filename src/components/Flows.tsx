@@ -20,7 +20,7 @@ const Flows = ({ data }: { data: FlowsData }) => {
     const linkObject = {} as Record<string, Record<string, number>>
     data.forEach((flow) => {
       const eventList = Object.entries(flow)
-      eventList.forEach(([_, event], index) => {
+      eventList.forEach(([, event], index) => {
         if (typeof event === `number`) {
           return
         }
