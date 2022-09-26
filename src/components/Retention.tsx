@@ -31,8 +31,8 @@ const Retention = ({ data }: { data: RetentionData }) => {
       xScale={{ type: `point` }}
       yScale={{
         type: `linear`,
-        min: `auto`,
-        max: `auto`,
+        min: 0,
+        max: 1,
         stacked: true,
         reverse: false,
       }}
