@@ -28,6 +28,8 @@
 - Retention
 - SQL runner with dbt/Jinja support
 
+## Quick Start
+
 ### Requirements
 * A [dbt project](https://getdbt.com) (running locally) with the [dbt_product_analytics](https://hub.getdbt.com/mjirv/dbt_product_analytics/latest/) package instealled
 * NodeJS
