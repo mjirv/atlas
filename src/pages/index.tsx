@@ -31,7 +31,7 @@ export default function Home() {
           <Link href="/reports/funnel">
             <a className={styles.card}>
               <Heading as="h2" size="xl">
-                Funnels &rarr;
+                Funnel &rarr;
               </Heading>
               <Text>
                 Analyze funnels and what leads users to convert or drop off.
@@ -39,7 +39,7 @@ export default function Home() {
             </a>
           </Link>
 
-          <Link href="/reports/new?type=flow">
+          <Link href="/reports/flows">
             <a className={styles.card}>
               <Heading as="h2" size="xl">
                 Flows &rarr;
@@ -51,7 +51,7 @@ export default function Home() {
             </a>
           </Link>
 
-          <Link href="/reports/new?type=retention">
+          <Link href="/reports/retention">
             <a className={styles.card}>
               <Heading as="h2" size="xl">
                 Retention &rarr;
@@ -62,7 +62,7 @@ export default function Home() {
             </a>
           </Link>
 
-          <Link href="/reports/new?type=sql">
+          <Link href="/reports/sql">
             <a className={styles.card}>
               <Heading as="h2" size="xl">
                 SQL Runner &rarr;
