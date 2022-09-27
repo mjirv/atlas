@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import Flows from '@/components/Flows'
 import Retention from '@/components/Retention'
 import { FunnelData, FlowsData, RetentionData } from '@/types'
+import MenuNav from '@/components/MenuNav'
 
 type Data = FunnelData | FlowsData | RetentionData
 
@@ -15,11 +16,11 @@ export default function Report() {
   const [columns, setColumns] = useState<ColumnDef<Data[0]>[] | null>(null)
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
-  const { reportType } = router.query
+  const { reportType, query } = router.query
 
   const fetchData = useCallback(async () => {
     setLoading(true)
-    const query = {
+    const demoQueries = {
       funnel: {
         eventStream: `ref('order_events')`,
         steps: [
@@ -39,12 +40,17 @@ export default function Report() {
         startDate: `2018-01-17`,
       },
     }
+    const reportQuery = query
+      ? Buffer.from(query as string, `base64`).toString()
+      : JSON.stringify(
+          demoQueries[reportType as 'funnel' | 'flows' | 'retention'],
+        )
     const res = await fetch(`/api/query/${reportType}`, {
       headers: {
         'Content-Type': `application/json`,
       },
       method: `post`,
-      body: JSON.stringify(query[reportType as 'funnel' | 'flows']),
+      body: reportQuery,
     })
 
     const { data } = (await res.json()) as { data: Data }
@@ -84,20 +90,25 @@ export default function Report() {
     fetchData()
   }, [fetchData])
 
-  return isLoading || !data || !columns ? (
-    <Spinner size="xl" />
-  ) : (
+  return (
     <>
-      <div
-        style={{
-          width: `100%`,
-          height: `500px`,
-          display: `block`,
-        }}
-      >
-        <Visualization />
-      </div>
-      <DataTable columns={columns} data={data} />
+      <MenuNav />
+      {isLoading || !data || !columns ? (
+        <Spinner size="xl" />
+      ) : (
+        <>
+          <div
+            style={{
+              width: `100%`,
+              height: `500px`,
+              display: `block`,
+            }}
+          >
+            <Visualization />
+          </div>
+          <DataTable columns={columns} data={data} />
+        </>
+      )}
     </>
   )
 }
