@@ -1,13 +1,11 @@
 import { DataTable } from '@/components/DataTable'
 import { Spinner } from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import Funnel from '@/components/Funnel'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Flows from '@/components/Flows'
-import Retention from '@/components/Retention'
-import { FunnelData, FlowsData, RetentionData } from '@/types'
+import { FunnelData, FlowsData, RetentionData, ReportType } from '@/types'
 import MenuNav from '@/components/MenuNav'
+import Visualization from '@/components/Visualization'
 
 type Data = FunnelData | FlowsData | RetentionData
 
@@ -65,26 +63,7 @@ export default function Report() {
     setData(data)
     setColumns(columns)
     setLoading(false)
-  }, [reportType])
-
-  const Visualization = useMemo(() => {
-    return function Visualization() {
-      switch (reportType) {
-        case `funnel`: {
-          return <Funnel data={data as FunnelData} />
-        }
-        case `flows`: {
-          return <Flows data={data as FlowsData} />
-        }
-        case `retention`: {
-          return <Retention data={data as RetentionData} />
-        }
-        default: {
-          return <Funnel data={data as FunnelData} />
-        }
-      }
-    }
-  }, [data, reportType])
+  }, [query, reportType])
 
   useEffect(() => {
     fetchData()
@@ -104,7 +83,7 @@ export default function Report() {
               display: `block`,
             }}
           >
-            <Visualization />
+            <Visualization reportType={reportType as ReportType} data={data} />
           </div>
           <DataTable columns={columns} data={data} />
         </>
