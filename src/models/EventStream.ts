@@ -1,3 +1,5 @@
+import sqlService from '@/services/SQLService'
+
 interface EventStreamMacroParams {
   from: string
   eventTypeCol: string
@@ -11,7 +13,25 @@ interface EventStreamRefParams {
   ref: string
 }
 
-export class EventStreamMacro {
+export interface EventStream {
+  toString: () => string
+  getEventTypes: () => Promise<string[]>
+}
+
+async function getEventTypesForEventStream(ref: string) {
+  const { data, error } = await sqlService.runSql(
+    `select distinct event_type from {{ ${ref} }} order by 1`,
+  )
+
+  if (error) {
+    throw new Error(`Unable to get event types for EventStream ${ref}`)
+  }
+
+  const eventTypes = JSON.parse(data) as Record<'event_type', string>[]
+  return eventTypes.map((eventType) => eventType[`event_type`])
+}
+
+export class EventStreamMacro implements EventStream {
   from: string
   eventTypeCol: string
   userIdCol: string
@@ -44,9 +64,13 @@ export class EventStreamMacro {
             : `none`
         }`
   }
+
+  async getEventTypes() {
+    return await getEventTypesForEventStream(this.toString())
+  }
 }
 
-export class EventStreamRef {
+export class EventStreamRef implements EventStream {
   ref: string
   constructor(params: EventStreamRefParams) {
     this.ref = params.ref
@@ -55,6 +79,8 @@ export class EventStreamRef {
   toString() {
     return `ref('${this.ref}')`
   }
-}
 
-export type EventStream = EventStreamMacro | EventStreamRef
+  async getEventTypes() {
+    return await getEventTypesForEventStream(this.toString())
+  }
+}

@@ -1,7 +1,7 @@
 import { EventStream } from '@/models/EventStream'
 
 export type FunnelRequestBody = {
-  steps: Record<'event_type', string>[]
+  steps: Record<'event_type', string>[] //TODO: change this to just string and update dbt_product_analytics to match
   eventStream: EventStream
 }
 
