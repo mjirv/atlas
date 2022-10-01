@@ -26,8 +26,6 @@ class DbtEventStreamService implements EventStreamService {
         outputKeys: `alias`,
       })
 
-      console.info(eventStreamsRaw.split(`\n`))
-
       this.eventStreams = eventStreamsRaw
         .split(`\n`)
         .filter((eventStreamsRaw) => eventStreamsRaw !== ``)
