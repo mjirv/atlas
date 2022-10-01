@@ -1,5 +1,5 @@
 import { DataTable } from '@/components/DataTable'
-import { Container, Spinner } from '@chakra-ui/react'
+import { Box, Container, Flex } from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -100,7 +100,7 @@ export default function Report() {
   }, [queryBase64])
 
   return (
-    <>
+    <Flex minHeight="100vh" flexDir="column" gap="10px">
       <MenuNav />
       <VisualizationForm
         reportType={reportType as ReportType}
@@ -108,8 +108,8 @@ export default function Report() {
         handleSubmit={handleSubmit}
       />
       {!isLoading && columns && data ? (
-        <Container>
-          <Container
+        <Box width="100%" height="100%">
+          <Box
             style={{
               width: `100%`,
               height: `500px`,
@@ -117,12 +117,12 @@ export default function Report() {
             }}
           >
             <Visualization reportType={reportType as ReportType} data={data} />
-          </Container>
+          </Box>
           <DataTable columns={columns} data={data} />
-        </Container>
+        </Box>
       ) : (
         <CenteredSpinner />
       )}
-    </>
+    </Flex>
   )
 }

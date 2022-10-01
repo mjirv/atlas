@@ -1,15 +1,17 @@
-import { Container, Spinner } from '@chakra-ui/react'
+import { Flex, Spinner } from '@chakra-ui/react'
 
 const CenteredSpinner = () => (
-  <Container
-    height="100%"
-    width="100%"
-    display="flex"
+  <Flex
+    alignSelf="stretch"
+    justifySelf="stretch"
     alignItems="center"
+    justifyItems="center"
+    alignContent="center"
     justifyContent="center"
+    flex="1"
   >
     <Spinner size="xl" />
-  </Container>
+  </Flex>
 )
 
 export default CenteredSpinner
