@@ -31,6 +31,8 @@ const FlowsVisualization = ({ data }: { data: FlowsData }) => {
         linkObject[`${index}. ${event}`] =
           linkObject[`${index}. ${event}`] || {}
         if (index > 0) {
+          linkObject[`${index - 1}. ${eventList[index - 1][1]}`] =
+            linkObject[`${index - 1}. ${eventList[index - 1][1]}`] || {}
           linkObject[`${index - 1}. ${eventList[index - 1][1]}`][
             `${index}. ${event}`
           ] =
