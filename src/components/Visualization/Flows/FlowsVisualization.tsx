@@ -2,7 +2,7 @@ import { FlowsData } from '@/types/FlowsData'
 import { ResponsiveSankey, DefaultNode, DefaultLink } from '@nivo/sankey'
 import { useMemo } from 'react'
 
-const Flows = ({ data }: { data: FlowsData }) => {
+const FlowsVisualization = ({ data }: { data: FlowsData }) => {
   /*
   [        
     {
@@ -114,4 +114,4 @@ const Flows = ({ data }: { data: FlowsData }) => {
   )
 }
 
-export default Flows
+export default FlowsVisualization

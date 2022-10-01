@@ -2,7 +2,7 @@ import { EventStream, EventStreamRef } from '@/models/EventStream'
 import DbtClient, { IDbtClient } from 'dbt_ts_client'
 
 type DbtEventStreamResource = {
-  name: string
+  alias: string
 }
 
 interface EventStreamService {
@@ -19,15 +19,24 @@ class DbtEventStreamService implements EventStreamService {
 
   async listEventStreams() {
     if (this.eventStreams.length === 0) {
-      const eventStreamRefs = JSON.parse(
-        await this.client.ls({
-          resourceType: `model`,
-          select: `tag:dbt_product_analytics`,
-        }),
-      ) as DbtEventStreamResource[]
-      this.eventStreams = eventStreamRefs.map(
-        (eventStream) => new EventStreamRef({ ref: eventStream.name }),
-      )
+      const eventStreamsRaw = await this.client.ls({
+        resourceType: `model`,
+        select: `tag:event_stream`,
+        output: `json`,
+        outputKeys: `alias`,
+      })
+
+      console.info(eventStreamsRaw.split(`\n`))
+
+      this.eventStreams = eventStreamsRaw
+        .split(`\n`)
+        .filter((eventStreamsRaw) => eventStreamsRaw !== ``)
+        .map(
+          (eventStreamRaw) =>
+            new EventStreamRef({
+              ref: (JSON.parse(eventStreamRaw) as DbtEventStreamResource).alias,
+            }),
+        )
     }
     return this.eventStreams
   }

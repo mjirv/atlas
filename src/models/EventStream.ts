@@ -27,7 +27,7 @@ async function getEventTypesForEventStream(ref: string) {
     throw new Error(`Unable to get event types for EventStream ${ref}`)
   }
 
-  const eventTypes = JSON.parse(data) as Record<'event_type', string>[]
+  const eventTypes = data as Record<'event_type', string>[]
   return eventTypes.map((eventType) => eventType[`event_type`])
 }
 

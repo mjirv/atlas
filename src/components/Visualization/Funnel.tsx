@@ -1,11 +1,12 @@
 import { FunnelData } from '@/types/FunnelData'
+import { Spinner } from '@chakra-ui/react'
 import { ResponsiveFunnel, FunnelDatum } from '@nivo/funnel'
 import { useMemo } from 'react'
 
-const Funnel = ({ data }: { data: FunnelData }) => {
-  const transformedData: FunnelDatum[] = useMemo(
+const Funnel = ({ data }: { data: FunnelData | undefined }) => {
+  const transformedData: FunnelDatum[] | undefined = useMemo(
     () =>
-      data.map((datum) => ({
+      data?.map((datum) => ({
         id: datum.event_type,
         value: datum.unique_users,
         label: datum.event_type,
@@ -13,9 +14,13 @@ const Funnel = ({ data }: { data: FunnelData }) => {
     [data],
   )
 
+  if (!data) {
+    return <Spinner size="xl" />
+  }
+
   return (
     <ResponsiveFunnel
-      data={transformedData}
+      data={transformedData as FunnelDatum[]}
       margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
       direction="horizontal"
       shapeBlending={0.38}

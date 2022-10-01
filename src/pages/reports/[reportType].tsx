@@ -10,7 +10,7 @@ import Visualization from '@/components/Visualization'
 type Data = FunnelData | FlowsData | RetentionData
 
 export default function Report() {
-  const [data, setData] = useState<Data | null>(null)
+  const [data, setData] = useState<Data>()
   const [columns, setColumns] = useState<ColumnDef<Data[0]>[] | null>(null)
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
@@ -72,21 +72,17 @@ export default function Report() {
   return (
     <>
       <MenuNav />
-      {isLoading || !data || !columns ? (
-        <Spinner size="xl" />
-      ) : (
-        <>
-          <div
-            style={{
-              width: `100%`,
-              height: `500px`,
-              display: `block`,
-            }}
-          >
-            <Visualization reportType={reportType as ReportType} data={data} />
-          </div>
-          <DataTable columns={columns} data={data} />
-        </>
+      <div
+        style={{
+          width: `100%`,
+          height: `500px`,
+          display: `block`,
+        }}
+      >
+        <Visualization reportType={reportType as ReportType} data={data} />
+      </div>
+      {!isLoading && columns && data && (
+        <DataTable columns={columns} data={data} />
       )}
     </>
   )
