@@ -1,11 +1,19 @@
 import { DataTable } from '@/components/DataTable'
-import { Spinner } from '@chakra-ui/react'
+import { Container, Spinner } from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { FunnelData, FlowsData, RetentionData, ReportType } from '@/types'
+import {
+  FunnelData,
+  FlowsData,
+  RetentionData,
+  ReportType,
+  FlowsRequestBody,
+} from '@/types'
 import MenuNav from '@/components/MenuNav'
 import Visualization from '@/components/Visualization'
+import CenteredSpinner from '@/components/CenteredSpinner'
+import VisualizationForm from '@/components/VisualizationForm'
 
 type Data = FunnelData | FlowsData | RetentionData
 
@@ -14,7 +22,21 @@ export default function Report() {
   const [columns, setColumns] = useState<ColumnDef<Data[0]>[] | null>(null)
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
-  const { reportType, query } = router.query
+  const { reportType, query: queryBase64 } = router.query
+  const [query, setQuery] = useState<string>()
+  const [queryObject, setQueryObject] = useState<FlowsRequestBody>()
+
+  const handleSubmit = useCallback(
+    (payload: FlowsRequestBody) => {
+      router.replace({
+        query: {
+          ...router.query,
+          query: Buffer.from(JSON.stringify(payload)).toString(`base64`),
+        },
+      })
+    },
+    [router],
+  )
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -38,11 +60,11 @@ export default function Report() {
         startDate: `2018-01-17`,
       },
     }
-    const reportQuery = query
-      ? Buffer.from(query as string, `base64`).toString()
-      : JSON.stringify(
-          demoQueries[reportType as 'funnel' | 'flows' | 'retention'],
-        )
+    const reportQuery =
+      query ||
+      JSON.stringify(
+        demoQueries[reportType as 'funnel' | 'flows' | 'retention'],
+      )
     const res = await fetch(`/api/query/${reportType}`, {
       headers: {
         'Content-Type': `application/json`,
@@ -69,20 +91,37 @@ export default function Report() {
     fetchData()
   }, [fetchData])
 
+  useEffect(() => {
+    if (typeof queryBase64 === `string`) {
+      const query = Buffer.from(queryBase64, `base64`).toString()
+      setQuery(query)
+      setQueryObject(JSON.parse(query))
+    }
+  }, [queryBase64])
+
   return (
     <>
       <MenuNav />
-      <div
-        style={{
-          width: `100%`,
-          height: `500px`,
-          display: `block`,
-        }}
-      >
-        <Visualization reportType={reportType as ReportType} data={data} />
-      </div>
-      {!isLoading && columns && data && (
-        <DataTable columns={columns} data={data} />
+      <VisualizationForm
+        reportType={reportType as ReportType}
+        query={queryObject}
+        handleSubmit={handleSubmit}
+      />
+      {!isLoading && columns && data ? (
+        <Container>
+          <Container
+            style={{
+              width: `100%`,
+              height: `500px`,
+              display: `block`,
+            }}
+          >
+            <Visualization reportType={reportType as ReportType} data={data} />
+          </Container>
+          <DataTable columns={columns} data={data} />
+        </Container>
+      ) : (
+        <CenteredSpinner />
       )}
     </>
   )

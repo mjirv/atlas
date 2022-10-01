@@ -1,3 +1,4 @@
+import { FlowsRequestBody } from '@/types'
 import { EventStreamResponse } from '@/types/ApiResponse'
 import {
   Button,
@@ -12,40 +13,37 @@ import {
   Select,
   Stack,
 } from '@chakra-ui/react'
-import { ChangeEvent, useCallback } from 'react'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 type Params = {
-  eventStreams: EventStreamResponse
-  selectedEventStream: EventStreamResponse[0] | undefined
-  setSelectedEventStream: (
-    eventStream: EventStreamResponse[0] | undefined,
-  ) => void
-  primaryEvent: string | undefined
-  setPrimaryEvent: (primaryEvent: string) => void
-  nEventsFrom?: number
-  setNEventsFrom: (nEventsFrom: number) => void
-  beforeOrAfter?: 'before' | 'after'
-  setBeforeOrAfter: (beforeOrAfter: 'before' | 'after') => void
-  topN?: number
-  setTopN: (topN: number) => void
-  handleSubmit: () => void
+  handleSubmit: (payload: FlowsRequestBody) => void
+  query: FlowsRequestBody | undefined
 }
 
 const FlowsForm = (params: Params) => {
-  const {
-    eventStreams,
-    selectedEventStream,
-    setSelectedEventStream,
-    primaryEvent,
-    setPrimaryEvent,
-    nEventsFrom,
-    setNEventsFrom,
-    beforeOrAfter,
-    setBeforeOrAfter,
-    topN,
-    setTopN,
-    handleSubmit,
-  } = params
+  const { handleSubmit, query } = params
+
+  const [eventStreams, setEventStreams] = useState<EventStreamResponse>([])
+  const [primaryEvent, setPrimaryEvent] = useState(query?.primaryEvent)
+  const [nEventsFrom, setNEventsFrom] = useState(query?.nEventsFrom)
+  const [beforeOrAfter, setBeforeOrAfter] = useState(query?.beforeOrAfter)
+  const [topN, setTopN] = useState(query?.topN)
+  const [selectedEventStream, setSelectedEventStream] = useState<
+    EventStreamResponse[0] | undefined
+  >(eventStreams?.find(({ eventStream }) => eventStream === query?.eventStream))
+
+  useEffect(() => {
+    const fetchEventStreams = async () => {
+      const fetchedEventStreams = (await (
+        await fetch(`/api/event_streams`, {
+          method: `get`,
+        })
+      ).json()) as EventStreamResponse
+      setEventStreams(fetchedEventStreams)
+      setSelectedEventStream(fetchedEventStreams[0])
+    }
+    fetchEventStreams()
+  }, [])
 
   const handleSelectEventStream = useCallback(
     (option: ChangeEvent<HTMLSelectElement>) => {
@@ -66,9 +64,34 @@ const FlowsForm = (params: Params) => {
     setNEventsFrom(Number(n))
   }
 
+  const handleSetBeforeOrAfter = (beforeOrAfter: 'before' | 'after') => {
+    setBeforeOrAfter(beforeOrAfter)
+  }
+
   const handleSetTopN = (n: string) => {
     setTopN(Number(n))
   }
+
+  const payload: FlowsRequestBody = useMemo(
+    () => ({
+      eventStream: selectedEventStream?.eventStream as string,
+      primaryEvent: primaryEvent as string,
+      nEventsFrom,
+      beforeOrAfter,
+      topN,
+    }),
+    [
+      beforeOrAfter,
+      nEventsFrom,
+      primaryEvent,
+      selectedEventStream?.eventStream,
+      topN,
+    ],
+  )
+
+  const onSubmit = useCallback(() => {
+    handleSubmit(payload)
+  }, [handleSubmit, payload])
 
   return (
     <Flex>
@@ -107,7 +130,7 @@ const FlowsForm = (params: Params) => {
           <NumberDecrementStepper />
         </NumberInputStepper>
       </NumberInput>
-      <RadioGroup onChange={setBeforeOrAfter} value={beforeOrAfter}>
+      <RadioGroup onChange={handleSetBeforeOrAfter} value={beforeOrAfter}>
         <Stack direction="row">
           <Radio value="before">Before</Radio>
           <Radio value="after">After</Radio>
@@ -126,7 +149,7 @@ const FlowsForm = (params: Params) => {
           <NumberDecrementStepper />
         </NumberInputStepper>
       </NumberInput>
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Button onClick={onSubmit}>Submit</Button>
     </Flex>
   )
 }
