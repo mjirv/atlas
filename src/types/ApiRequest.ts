@@ -6,7 +6,7 @@ export type FunnelRequestBody = {
 }
 
 export type FlowsRequestBody = {
-  eventStream: EventStream
+  eventStream: string
   primaryEvent: string
   nEventsFrom?: number
   beforeOrAfter?: 'before' | 'after'
