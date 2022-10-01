@@ -38,6 +38,7 @@ export class EventStreamMacro implements EventStream {
   dateCol: string
   startDate?: Date
   endDate?: Date
+  private eventTypes: string[] | undefined
   constructor(params: EventStreamMacroParams) {
     this.from = params.from
     this.eventTypeCol = params.eventTypeCol
@@ -66,12 +67,16 @@ export class EventStreamMacro implements EventStream {
   }
 
   async getEventTypes() {
-    return await getEventTypesForEventStream(this.toString())
+    if (!this.eventTypes) {
+      this.eventTypes = await getEventTypesForEventStream(this.toString())
+    }
+    return this.eventTypes
   }
 }
 
 export class EventStreamRef implements EventStream {
   ref: string
+  private eventTypes: string[] | undefined
   constructor(params: EventStreamRefParams) {
     this.ref = params.ref
   }
@@ -81,6 +86,9 @@ export class EventStreamRef implements EventStream {
   }
 
   async getEventTypes() {
-    return await getEventTypesForEventStream(this.toString())
+    if (!this.eventTypes) {
+      this.eventTypes = await getEventTypesForEventStream(this.toString())
+    }
+    return this.eventTypes
   }
 }
