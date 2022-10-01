@@ -28,9 +28,24 @@ const FlowsForm = (params: Params) => {
   const [nEventsFrom, setNEventsFrom] = useState(query?.nEventsFrom)
   const [beforeOrAfter, setBeforeOrAfter] = useState(query?.beforeOrAfter)
   const [topN, setTopN] = useState(query?.topN)
+  const findEventStreamByName = useCallback(
+    (eventStreamName: string | undefined) =>
+      eventStreams?.find(({ eventStream }) => eventStream === eventStreamName),
+    [eventStreams],
+  )
   const [selectedEventStream, setSelectedEventStream] = useState<
     EventStreamResponse[0] | undefined
-  >(eventStreams?.find(({ eventStream }) => eventStream === query?.eventStream))
+  >(findEventStreamByName(query?.eventStream))
+
+  useEffect(() => {
+    if (query) {
+      setPrimaryEvent(query.primaryEvent)
+      setNEventsFrom(query.nEventsFrom)
+      setBeforeOrAfter(query.beforeOrAfter)
+      setTopN(query.topN)
+      setSelectedEventStream(findEventStreamByName(query.eventStream))
+    }
+  }, [findEventStreamByName, query])
 
   useEffect(() => {
     const fetchEventStreams = async () => {
@@ -94,7 +109,7 @@ const FlowsForm = (params: Params) => {
   }, [handleSubmit, payload])
 
   return (
-    <Flex>
+    <Flex gap="5px" flexWrap="wrap">
       <Select
         placeholder="Select event stream"
         value={selectedEventStream?.eventStream}

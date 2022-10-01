@@ -40,37 +40,12 @@ export default function Report() {
 
   const fetchData = useCallback(async () => {
     setLoading(true)
-    const demoQueries = {
-      funnel: {
-        eventStream: `ref('order_events')`,
-        steps: [
-          { event_type: `placed` },
-          { event_type: `completed` },
-          { event_type: `returned` },
-        ],
-      },
-      flows: {
-        eventStream: `ref('order_events')`,
-        primaryEvent: `placed`,
-      },
-      retention: {
-        eventStream: `ref('order_events')`,
-        firstAction: `completed`,
-        secondAction: `completed`,
-        startDate: `2018-01-17`,
-      },
-    }
-    const reportQuery =
-      query ||
-      JSON.stringify(
-        demoQueries[reportType as 'funnel' | 'flows' | 'retention'],
-      )
     const res = await fetch(`/api/query/${reportType}`, {
       headers: {
         'Content-Type': `application/json`,
       },
       method: `post`,
-      body: reportQuery,
+      body: query,
     })
 
     const { data } = (await res.json()) as { data: Data }
@@ -107,22 +82,26 @@ export default function Report() {
         query={queryObject}
         handleSubmit={handleSubmit}
       />
-      {!isLoading && columns && data ? (
-        <Box width="100%" height="100%">
-          <Box
-            style={{
-              width: `100%`,
-              height: `500px`,
-              display: `block`,
-            }}
-          >
-            <Visualization reportType={reportType as ReportType} data={data} />
+      {query &&
+        (!isLoading && columns && data ? (
+          <Box width="100%" height="100%">
+            <Box
+              style={{
+                width: `100%`,
+                height: `500px`,
+                display: `block`,
+              }}
+            >
+              <Visualization
+                reportType={reportType as ReportType}
+                data={data}
+              />
+            </Box>
+            <DataTable columns={columns} data={data} />
           </Box>
-          <DataTable columns={columns} data={data} />
-        </Box>
-      ) : (
-        <CenteredSpinner />
-      )}
+        ) : (
+          <CenteredSpinner />
+        ))}
     </Flex>
   )
 }
