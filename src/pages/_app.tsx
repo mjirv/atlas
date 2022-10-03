@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import '@/styles/globals.css'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import EventStreamsProvider from '@/components/EventStreamsProvider'
 
 const colors = {
   brand: {
@@ -15,7 +16,9 @@ export const theme = extendTheme({ colors })
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
+      <EventStreamsProvider>
+        <Component {...pageProps} />
+      </EventStreamsProvider>
     </ChakraProvider>
   )
 }

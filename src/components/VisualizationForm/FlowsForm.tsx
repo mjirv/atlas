@@ -13,7 +13,15 @@ import {
   Select,
   Stack,
 } from '@chakra-ui/react'
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  ChangeEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+import { EventStreamContext } from '../EventStreamsProvider'
 
 type Params = {
   handleSubmit: (payload: FlowsRequestBody) => void
@@ -23,11 +31,11 @@ type Params = {
 const FlowsForm = (params: Params) => {
   const { handleSubmit, query } = params
 
-  const [eventStreams, setEventStreams] = useState<EventStreamResponse>([])
   const [primaryEvent, setPrimaryEvent] = useState(query?.primaryEvent)
   const [nEventsFrom, setNEventsFrom] = useState(query?.nEventsFrom)
   const [beforeOrAfter, setBeforeOrAfter] = useState(query?.beforeOrAfter)
   const [topN, setTopN] = useState(query?.topN)
+  const eventStreams = useContext(EventStreamContext)
   const findEventStreamByName = useCallback(
     (eventStreamName: string | undefined) =>
       eventStreams?.find(({ eventStream }) => eventStream === eventStreamName),
@@ -47,23 +55,10 @@ const FlowsForm = (params: Params) => {
     }
   }, [findEventStreamByName, query])
 
-  useEffect(() => {
-    const fetchEventStreams = async () => {
-      const fetchedEventStreams = (await (
-        await fetch(`/api/event_streams`, {
-          method: `get`,
-        })
-      ).json()) as EventStreamResponse
-      setEventStreams(fetchedEventStreams)
-      setSelectedEventStream(fetchedEventStreams[0])
-    }
-    fetchEventStreams()
-  }, [])
-
   const handleSelectEventStream = useCallback(
     (option: ChangeEvent<HTMLSelectElement>) => {
       setSelectedEventStream(
-        eventStreams.find(
+        eventStreams?.find(
           ({ eventStream }) => eventStream === option.target.value,
         ),
       )
@@ -115,7 +110,7 @@ const FlowsForm = (params: Params) => {
         value={selectedEventStream?.eventStream}
         onChange={handleSelectEventStream}
       >
-        {eventStreams.map((eventStream, i) => (
+        {eventStreams?.map((eventStream, i) => (
           <option key={`event_stream_${i}`} value={eventStream.eventStream}>
             {eventStream.eventStream}
           </option>

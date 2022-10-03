@@ -1,5 +1,5 @@
 import { DataTable } from '@/components/DataTable'
-import { Box, Container, Flex } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -63,8 +63,8 @@ export default function Report() {
   }, [query, reportType])
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    query && fetchData()
+  }, [fetchData, query])
 
   useEffect(() => {
     if (typeof queryBase64 === `string`) {
