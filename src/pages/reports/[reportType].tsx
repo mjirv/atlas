@@ -1,7 +1,7 @@
 import { DataTable } from '@/components/DataTable'
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, Skeleton, Stack } from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import {
   FunnelData,
@@ -12,8 +12,10 @@ import {
 } from '@/types'
 import MenuNav from '@/components/MenuNav'
 import Visualization from '@/components/Visualization'
-import CenteredSpinner from '@/components/CenteredSpinner'
+import CenteredSpinner from '@/components/Loading/CenteredSpinner'
 import VisualizationForm from '@/components/VisualizationForm'
+import { EventStreamContext } from '@/components/EventStreamsProvider'
+import FormSkeleton from '@/components/Loading/FormSkeleton'
 
 type Data = FunnelData | FlowsData | RetentionData
 
@@ -25,6 +27,7 @@ export default function Report() {
   const { reportType, query: queryBase64 } = router.query
   const [query, setQuery] = useState<string>()
   const [queryObject, setQueryObject] = useState<FlowsRequestBody>()
+  const eventStreams = useContext(EventStreamContext)
 
   const handleSubmit = useCallback(
     (payload: FlowsRequestBody) => {
@@ -77,13 +80,18 @@ export default function Report() {
   return (
     <Flex minHeight="100vh" flexDir="column" gap="10px">
       <MenuNav />
-      <VisualizationForm
-        reportType={reportType as ReportType}
-        query={queryObject}
-        handleSubmit={handleSubmit}
-      />
-      {query &&
-        (!isLoading && columns && data ? (
+      {!!eventStreams ? (
+        <VisualizationForm
+          reportType={reportType as ReportType}
+          query={queryObject}
+          handleSubmit={handleSubmit}
+          eventStreams={eventStreams}
+        />
+      ) : (
+        <FormSkeleton />
+      )}
+      {(query || !eventStreams) &&
+        (!isLoading && columns && data && eventStreams ? (
           <Box width="100%" height="100%">
             <Box
               style={{

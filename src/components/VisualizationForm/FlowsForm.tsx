@@ -13,29 +13,21 @@ import {
   Select,
   Stack,
 } from '@chakra-ui/react'
-import {
-  ChangeEvent,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
-import { EventStreamContext } from '../EventStreamsProvider'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 type Params = {
+  eventStreams: EventStreamResponse | undefined
   handleSubmit: (payload: FlowsRequestBody) => void
   query: FlowsRequestBody | undefined
 }
 
 const FlowsForm = (params: Params) => {
-  const { handleSubmit, query } = params
+  const { eventStreams, handleSubmit, query } = params
 
   const [primaryEvent, setPrimaryEvent] = useState(query?.primaryEvent)
   const [nEventsFrom, setNEventsFrom] = useState(query?.nEventsFrom)
   const [beforeOrAfter, setBeforeOrAfter] = useState(query?.beforeOrAfter)
   const [topN, setTopN] = useState(query?.topN)
-  const eventStreams = useContext(EventStreamContext)
   const findEventStreamByName = useCallback(
     (eventStreamName: string | undefined) =>
       eventStreams?.find(({ eventStream }) => eventStream === eventStreamName),

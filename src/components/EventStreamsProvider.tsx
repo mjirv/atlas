@@ -10,7 +10,7 @@ const EventStreamsProvider = ({
 }: {
   children: JSX.Element | JSX.Element[]
 }) => {
-  const [eventStreams, setEventStreams] = useState<EventStreamResponse>([])
+  const [eventStreams, setEventStreams] = useState<EventStreamResponse>()
 
   useEffect(() => {
     const fetchEventStreams = async () => {
