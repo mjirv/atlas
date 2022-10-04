@@ -14,6 +14,7 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import SelectEventStream from './SelectEventStream'
 
 type Params = {
   eventStreams: EventStreamResponse | undefined
@@ -97,17 +98,11 @@ const FlowsForm = (params: Params) => {
 
   return (
     <Flex gap="5px" flexWrap="wrap">
-      <Select
-        placeholder="Select event stream"
-        value={selectedEventStream?.eventStream}
+      <SelectEventStream
+        eventStreams={eventStreams}
+        selectedEventStream={selectedEventStream?.eventStream}
         onChange={handleSelectEventStream}
-      >
-        {eventStreams?.map((eventStream, i) => (
-          <option key={`event_stream_${i}`} value={eventStream.eventStream}>
-            {eventStream.eventStream}
-          </option>
-        ))}
-      </Select>
+      />
       <Select
         placeholder="Select primary event"
         value={primaryEvent}
