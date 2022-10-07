@@ -42,8 +42,10 @@ const FlowsForm = (params: Params): JSX.Element => {
       setBeforeOrAfter(query.beforeOrAfter)
       setTopN(query.topN)
       setSelectedEventStream(findEventStreamByName(query.eventStream))
+    } else {
+      setSelectedEventStream(eventStreams?.[0])
     }
-  }, [findEventStreamByName, query])
+  }, [eventStreams, findEventStreamByName, query])
 
   const handleSelectEventStream = useCallback(
     (option: ChangeEvent<HTMLSelectElement>) => {

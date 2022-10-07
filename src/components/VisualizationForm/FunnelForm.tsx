@@ -2,7 +2,7 @@ import { FunnelRequestBody } from '@/types'
 import { EventStreamResponse } from '@/types/ApiResponse'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { Button, Flex } from '@chakra-ui/react'
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import SelectEvent from './SelectEvent'
 import SelectEventStream from './SelectEventStream'
 import { FormParams } from './types/FormParams'
@@ -31,6 +31,14 @@ const FunnelForm = (params: Params): JSX.Element => {
     },
     [eventStreams, setSelectedEventStream],
   )
+
+  useEffect(() => {
+    if (query) {
+      setSelectedEventStream(findEventStreamByName(query.eventStream))
+    } else {
+      setSelectedEventStream(eventStreams?.[0])
+    }
+  }, [eventStreams, findEventStreamByName, query])
 
   const payload: FunnelRequestBody = useMemo(
     () => ({
