@@ -1,5 +1,6 @@
 import { FunnelRequestBody } from '@/types'
 import { EventStreamResponse } from '@/types/ApiResponse'
+import { DeleteIcon } from '@chakra-ui/icons'
 import { Button, Flex } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import SelectEvent from './SelectEvent'
@@ -53,19 +54,30 @@ const FunnelForm = (params: Params): JSX.Element => {
         onChange={handleSelectEventStream}
       />
       {steps.map((step, i) => (
-        <SelectEvent
-          placeholder={`Select event #${i + 1}`}
-          key={`step_${i}`}
-          eventStream={selectedEventStream}
-          selectedEvent={step}
-          handleSelectEvent={(e) =>
-            setSteps([
-              ...steps.slice(0, i),
-              e.target.value,
-              ...steps.slice(i + 1, steps.length),
-            ])
-          }
-        />
+        <Flex flexDirection={`column`} key={`select_event_container_${i}`}>
+          <SelectEvent
+            placeholder={`Select event #${i + 1}`}
+            key={`step_${i}`}
+            eventStream={selectedEventStream}
+            selectedEvent={step}
+            handleSelectEvent={(e) =>
+              setSteps([
+                ...steps.slice(0, i),
+                e.target.value,
+                ...steps.slice(i + 1, steps.length),
+              ])
+            }
+          />
+          <DeleteIcon
+            style={{ cursor: `pointer` }}
+            onClick={() =>
+              setSteps([
+                ...steps.slice(0, i),
+                ...steps.slice(i + 1, steps.length),
+              ])
+            }
+          />
+        </Flex>
       ))}
       <SelectEvent
         placeholder={`Select event #${steps.length + 1}`}
