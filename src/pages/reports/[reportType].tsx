@@ -9,6 +9,7 @@ import {
   RetentionData,
   ReportType,
   FlowsRequestBody,
+  FunnelRequestBody,
 } from '@/types'
 import MenuNav from '@/components/MenuNav'
 import Visualization from '@/components/Visualization'
@@ -30,7 +31,7 @@ export default function Report() {
   const eventStreams = useContext(EventStreamContext)
 
   const handleSubmit = useCallback(
-    (payload: FlowsRequestBody) => {
+    (payload: FlowsRequestBody | FunnelRequestBody) => {
       router.replace({
         query: {
           ...router.query,

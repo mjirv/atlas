@@ -1,11 +1,12 @@
-import { FlowsRequestBody, ReportType } from '@/types'
+import { FlowsRequestBody, FunnelRequestBody, ReportType } from '@/types'
 import { EventStreamResponse } from '@/types/ApiResponse'
 import FlowsForm from './FlowsForm'
+import FunnelForm from './FunnelForm'
 
 type Props = {
   reportType: ReportType
-  handleSubmit: (payload: FlowsRequestBody) => void
-  query: FlowsRequestBody | undefined
+  handleSubmit: (payload: FlowsRequestBody | FunnelRequestBody) => void
+  query: FlowsRequestBody | FunnelRequestBody | undefined
   eventStreams: EventStreamResponse | undefined
 }
 
@@ -20,7 +21,16 @@ const VisualizationForm = ({
       return (
         <FlowsForm
           handleSubmit={handleSubmit}
-          query={query}
+          query={query as FlowsRequestBody | undefined}
+          eventStreams={eventStreams}
+        />
+      )
+    }
+    case `funnel`: {
+      return (
+        <FunnelForm
+          handleSubmit={handleSubmit}
+          query={query as FunnelRequestBody | undefined}
           eventStreams={eventStreams}
         />
       )
@@ -29,7 +39,7 @@ const VisualizationForm = ({
       return (
         <FlowsForm
           handleSubmit={handleSubmit}
-          query={query}
+          query={query as FlowsRequestBody | undefined}
           eventStreams={eventStreams}
         />
       )

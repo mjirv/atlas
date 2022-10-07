@@ -12,7 +12,7 @@ const SelectEventStream = ({
   eventStreams,
   selectedEventStream,
   onChange,
-}: Params) => (
+}: Params): JSX.Element => (
   <Select
     placeholder="Select event stream"
     value={selectedEventStream}

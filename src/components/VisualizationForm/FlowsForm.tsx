@@ -10,19 +10,16 @@ import {
   NumberInputStepper,
   Radio,
   RadioGroup,
-  Select,
   Stack,
 } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import SelectEvent from './SelectEvent'
 import SelectEventStream from './SelectEventStream'
+import { FormParams } from './types/FormParams'
 
-type Params = {
-  eventStreams: EventStreamResponse | undefined
-  handleSubmit: (payload: FlowsRequestBody) => void
-  query: FlowsRequestBody | undefined
-}
+type Params = FormParams & { query: FlowsRequestBody | undefined }
 
-const FlowsForm = (params: Params) => {
+const FlowsForm = (params: Params): JSX.Element => {
   const { eventStreams, handleSubmit, query } = params
 
   const [primaryEvent, setPrimaryEvent] = useState(query?.primaryEvent)
@@ -103,17 +100,11 @@ const FlowsForm = (params: Params) => {
         selectedEventStream={selectedEventStream?.eventStream}
         onChange={handleSelectEventStream}
       />
-      <Select
-        placeholder="Select primary event"
-        value={primaryEvent}
-        onChange={handleSetPrimaryEvent}
-      >
-        {selectedEventStream?.eventTypes.map((eventType, i) => (
-          <option key={`event_type_${i}`} value={eventType}>
-            {eventType}
-          </option>
-        ))}
-      </Select>
+      <SelectEvent
+        eventStream={selectedEventStream}
+        selectedEvent={primaryEvent}
+        handleSelectEvent={handleSetPrimaryEvent}
+      />
       <NumberInput
         min={1}
         max={20}
