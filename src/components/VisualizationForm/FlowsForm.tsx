@@ -137,7 +137,7 @@ const FlowsForm = (params: Params): JSX.Element => {
           <NumberDecrementStepper />
         </NumberInputStepper>
       </NumberInput>
-      <Button onClick={onSubmit}>Submit</Button>
+      <Button onClick={onSubmit}>Run Query</Button>
     </Flex>
   )
 }

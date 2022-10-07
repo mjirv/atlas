@@ -85,7 +85,7 @@ const FunnelForm = (params: Params): JSX.Element => {
         selectedEvent={``}
         handleSelectEvent={(e) => setSteps([...steps, e.target.value])}
       />
-      <Button onClick={onSubmit}>Submit</Button>
+      <Button onClick={onSubmit}>Run Query</Button>
     </Flex>
   )
 }
