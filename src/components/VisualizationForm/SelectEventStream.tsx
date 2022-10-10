@@ -1,5 +1,5 @@
 import { EventStreamResponse } from '@/types/ApiResponse'
-import { Select } from '@chakra-ui/react'
+import { FormControl, FormLabel, Select } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
 
 type Params = {
@@ -13,17 +13,20 @@ const SelectEventStream = ({
   selectedEventStream,
   onChange,
 }: Params): JSX.Element => (
-  <Select
-    placeholder="Select event stream"
-    value={selectedEventStream}
-    onChange={onChange}
-  >
-    {eventStreams?.map((eventStream, i) => (
-      <option key={`event_stream_${i}`} value={eventStream.eventStream}>
-        {eventStream.eventStream}
-      </option>
-    ))}
-  </Select>
+  <FormControl id="event-stream" isRequired>
+    <FormLabel>Event stream</FormLabel>
+    <Select
+      placeholder="Select event stream"
+      value={selectedEventStream}
+      onChange={onChange}
+    >
+      {eventStreams?.map((eventStream, i) => (
+        <option key={`event_stream_${i}`} value={eventStream.eventStream}>
+          {eventStream.eventStream}
+        </option>
+      ))}
+    </Select>
+  </FormControl>
 )
 
 export default SelectEventStream

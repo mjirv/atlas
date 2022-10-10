@@ -48,11 +48,11 @@ const FunnelForm = (params: Params): JSX.Element => {
     [selectedEventStream?.eventStream, steps],
   )
 
+  const valid = eventStreams && steps.length >= 2
+
   const onSubmit = useCallback(() => {
     handleSubmit(payload)
   }, [handleSubmit, payload])
-
-  console.info(steps)
 
   return (
     <Flex gap="5px" flexWrap="wrap">
@@ -64,6 +64,7 @@ const FunnelForm = (params: Params): JSX.Element => {
       {steps.map((step, i) => (
         <Flex flexDirection={`column`} key={`select_event_container_${i}`}>
           <SelectEvent
+            id={`event-${i}`}
             placeholder={`Select event #${i + 1}`}
             key={`step_${i}`}
             eventStream={selectedEventStream}
@@ -88,12 +89,17 @@ const FunnelForm = (params: Params): JSX.Element => {
         </Flex>
       ))}
       <SelectEvent
+        id={`event-new`}
+        label="Add event"
+        required={steps.length < 2}
         placeholder={`Select event #${steps.length + 1}`}
         eventStream={selectedEventStream}
         selectedEvent={``}
         handleSelectEvent={(e) => setSteps([...steps, e.target.value])}
       />
-      <Button onClick={onSubmit}>Run Query</Button>
+      <Button onClick={onSubmit} disabled={!valid}>
+        Run Query
+      </Button>
     </Flex>
   )
 }

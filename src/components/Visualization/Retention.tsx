@@ -44,7 +44,7 @@ const Retention = ({ data }: { data: RetentionData }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: `transportation`,
+        legend: `days`,
         legendOffset: 36,
         legendPosition: `middle`,
       }}
@@ -52,7 +52,7 @@ const Retention = ({ data }: { data: RetentionData }) => {
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: `count`,
+        legend: `percent retained`,
         legendOffset: -40,
         legendPosition: `middle`,
       }}

@@ -3,6 +3,8 @@ import { EventStreamResponse } from '@/types/ApiResponse'
 import {
   Button,
   Flex,
+  FormControl,
+  FormLabel,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -91,6 +93,8 @@ const FlowsForm = (params: Params): JSX.Element => {
     ],
   )
 
+  const valid = eventStreams && primaryEvent
+
   const onSubmit = useCallback(() => {
     handleSubmit(payload)
   }, [handleSubmit, payload])
@@ -103,43 +107,59 @@ const FlowsForm = (params: Params): JSX.Element => {
         onChange={handleSelectEventStream}
       />
       <SelectEvent
+        id="primary-event"
+        label="Primary event"
+        required={true}
         eventStream={selectedEventStream}
         selectedEvent={primaryEvent}
         handleSelectEvent={handleSetPrimaryEvent}
       />
-      <NumberInput
-        min={1}
-        max={20}
-        placeholder="Number of events before/after"
-        value={nEventsFrom}
-        onChange={handleSetNEventsFrom}
-      >
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-      <RadioGroup onChange={handleSetBeforeOrAfter} value={beforeOrAfter}>
-        <Stack direction="row">
-          <Radio value="before">Before</Radio>
-          <Radio value="after">After</Radio>
-        </Stack>
-      </RadioGroup>
-      <NumberInput
-        min={1}
-        max={20}
-        placeholder="Number of flows to show"
-        value={topN}
-        onChange={handleSetTopN}
-      >
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-      <Button onClick={onSubmit}>Run Query</Button>
+      <FormControl id="n-events">
+        <FormLabel>Number of events</FormLabel>
+        <NumberInput
+          min={1}
+          max={20}
+          placeholder="Number of events before/after"
+          value={nEventsFrom}
+          onChange={handleSetNEventsFrom}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </FormControl>
+      <FormControl id="before-or-after">
+        <FormLabel>Before or after</FormLabel>
+        <RadioGroup onChange={handleSetBeforeOrAfter} value={beforeOrAfter}>
+          <Stack direction="row">
+            <Radio value="before">Before</Radio>
+            <Radio value="after">After</Radio>
+          </Stack>
+        </RadioGroup>
+      </FormControl>
+      <FormControl id="n-flows">
+        <FormLabel>
+          Top <i>n</i> paths
+        </FormLabel>
+        <NumberInput
+          min={1}
+          max={20}
+          placeholder="Number of flows to show"
+          value={topN}
+          onChange={handleSetTopN}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </FormControl>
+      <Button onClick={onSubmit} disabled={!valid}>
+        Run Query
+      </Button>
     </Flex>
   )
 }
