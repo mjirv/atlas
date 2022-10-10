@@ -1,5 +1,5 @@
 import { DataTable } from '@/components/DataTable'
-import { Box, Flex, Skeleton, Stack } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -10,6 +10,7 @@ import {
   ReportType,
   FlowsRequestBody,
   FunnelRequestBody,
+  RetentionRequestBody,
 } from '@/types'
 import MenuNav from '@/components/MenuNav'
 import Visualization from '@/components/Visualization'
@@ -27,11 +28,13 @@ export default function Report() {
   const router = useRouter()
   const { reportType, query: queryBase64 } = router.query
   const [query, setQuery] = useState<string>()
-  const [queryObject, setQueryObject] = useState<FlowsRequestBody>()
+  const [queryObject, setQueryObject] = useState<
+    FlowsRequestBody | FunnelRequestBody | RetentionRequestBody
+  >()
   const eventStreams = useContext(EventStreamContext)
 
   const handleSubmit = useCallback(
-    (payload: FlowsRequestBody | FunnelRequestBody) => {
+    (payload: FlowsRequestBody | FunnelRequestBody | RetentionRequestBody) => {
       router.replace({
         query: {
           ...router.query,
@@ -39,7 +42,7 @@ export default function Report() {
         },
       })
     },
-    [router],
+    [router, router.query],
   )
 
   const fetchData = useCallback(async () => {

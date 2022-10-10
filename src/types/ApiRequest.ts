@@ -1,5 +1,3 @@
-import { EventStream } from '@/models/EventStream'
-
 export type FunnelRequestBody = {
   steps: string[]
   eventStream: string
@@ -14,7 +12,7 @@ export type FlowsRequestBody = {
 }
 
 export type RetentionRequestBody = {
-  eventStream: EventStream
+  eventStream: string
   firstAction: string
   secondAction: string
   startDate?: Date
