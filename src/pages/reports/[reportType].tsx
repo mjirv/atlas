@@ -1,5 +1,5 @@
 import { DataTable } from '@/components/DataTable'
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Container, Flex } from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -42,6 +42,7 @@ export default function Report() {
         },
       })
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [router, router.query],
   )
 
@@ -84,36 +85,38 @@ export default function Report() {
   return (
     <Flex minHeight="100vh" flexDir="column" gap="10px">
       <MenuNav />
-      {!!eventStreams ? (
-        <VisualizationForm
-          reportType={reportType as ReportType}
-          query={queryObject}
-          handleSubmit={handleSubmit}
-          eventStreams={eventStreams}
-        />
-      ) : (
-        <FormSkeleton />
-      )}
-      {(query || !eventStreams) &&
-        (!isLoading && columns && data && eventStreams ? (
-          <Box width="100%" height="100%">
-            <Box
-              style={{
-                width: `100%`,
-                height: `500px`,
-                display: `block`,
-              }}
-            >
-              <Visualization
-                reportType={reportType as ReportType}
-                data={data}
-              />
-            </Box>
-            <DataTable columns={columns} data={data} />
-          </Box>
+      <Container maxWidth={`100%`} margin="20px 0">
+        {!!eventStreams ? (
+          <VisualizationForm
+            reportType={reportType as ReportType}
+            query={queryObject}
+            handleSubmit={handleSubmit}
+            eventStreams={eventStreams}
+          />
         ) : (
-          <CenteredSpinner />
-        ))}
+          <FormSkeleton />
+        )}
+        {(query || !eventStreams) &&
+          (!isLoading && columns && data && eventStreams ? (
+            <Box width="100%" height="100%">
+              <Box
+                style={{
+                  width: `100%`,
+                  height: `500px`,
+                  display: `block`,
+                }}
+              >
+                <Visualization
+                  reportType={reportType as ReportType}
+                  data={data}
+                />
+              </Box>
+              <DataTable columns={columns} data={data} />
+            </Box>
+          ) : (
+            <CenteredSpinner />
+          ))}
+      </Container>
     </Flex>
   )
 }
