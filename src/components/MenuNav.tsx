@@ -1,4 +1,4 @@
-import { Flex, Button, Link } from '@chakra-ui/react'
+import { Flex, Button, Link, Tooltip } from '@chakra-ui/react'
 
 const MenuButton = ({ ...params }) => {
   return (
@@ -26,7 +26,13 @@ const MenuNav = () => {
       <MenuButton href="/reports/funnel">Funnel</MenuButton>
       <MenuButton href="/reports/flows">Flows</MenuButton>
       <MenuButton href="/reports/retention">Retention</MenuButton>
-      <MenuButton href="/reports/sql">SQL Runner</MenuButton>
+      <Tooltip
+        label="Coming soon!"
+        aria-label="Coming soon"
+        shouldWrapChildren={true}
+      >
+        <MenuButton disabled={true}>SQL Runner</MenuButton>
+      </Tooltip>
     </Flex>
   )
 }

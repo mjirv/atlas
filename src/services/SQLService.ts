@@ -1,40 +1,21 @@
-import { EventStream } from '@/models/EventStream'
+import {
+  FlowsRequestBody,
+  FunnelRequestBody,
+  RetentionRequestBody,
+} from '@/types'
 import { AtlasError } from '@/types/AtlasError'
 import DbtClient, { IDbtClient } from 'dbt_ts_client'
 
 type SQLResponse = { data: string } | { error: AtlasError }
 
-interface FunnelParams {
-  steps: Record<'event_type', string>[]
-  eventStream: EventStream
-}
-
-interface FlowsParams {
-  eventStream: EventStream
-  primaryEvent: string
-  nEventsFrom?: number
-  beforeOrAfter?: 'before' | 'after'
-  topN?: number
-}
-
-interface RetentionParams {
-  eventStream: EventStream
-  firstAction: string
-  secondAction: string
-  startDate?: Date
-  endDate?: Date
-  periods?: number[]
-  periodType?: string
-  groupBy?: string
-}
-
 interface SQLService {
   runSql: (query: string) => Promise<SQLResponse>
-  runFunnel: (params: FunnelParams) => Promise<SQLResponse>
-  runFlows: (params: FlowsParams) => Promise<SQLResponse>
+  runFunnel: (body: FunnelRequestBody) => Promise<SQLResponse>
+  runFlows: (body: FlowsRequestBody) => Promise<SQLResponse>
+  runRetention: (body: RetentionRequestBody) => Promise<SQLResponse>
 }
 
-interface OptionalParam {
+type OptionalParam = {
   name: string
   param: string | number | Date | number[] | undefined
 }
@@ -63,39 +44,39 @@ class DbtSQLService implements SQLService {
     return { data: JSON.parse(data) }
   }
 
-  runFunnel = async (params: FunnelParams) => {
+  runFunnel = async (body: FunnelRequestBody) => {
     const query = `{{ dbt_product_analytics.funnel(steps=${JSON.stringify(
-      params.steps,
-    )}, event_stream=${params.eventStream}) }}`
+      body.steps,
+    )}, event_stream=${body.eventStream}) }}`
     return this.runSql(query)
   }
 
-  runFlows = async (params: FlowsParams) => {
+  runFlows = async (body: FlowsRequestBody) => {
     const query = `{{ dbt_product_analytics.flows(event_stream=${
-      params.eventStream
+      body.eventStream
     }, primary_event=${JSON.stringify(
-      params.primaryEvent,
+      body.primaryEvent,
     )}${optionalParamsToString([
-      { name: `n_events_from`, param: params.nEventsFrom },
-      { name: `before_or_after`, param: params.beforeOrAfter },
-      { name: `top_n`, param: params.topN },
+      { name: `n_events_from`, param: body.nEventsFrom },
+      { name: `before_or_after`, param: body.beforeOrAfter },
+      { name: `top_n`, param: body.topN },
     ])}) }}`
     return this.runSql(query)
   }
 
-  runRetention = async (params: RetentionParams) => {
+  runRetention = async (body: RetentionRequestBody) => {
     const query = `{{ dbt_product_analytics.retention(event_stream=${
-      params.eventStream
+      body.eventStream
     }, first_action=${JSON.stringify(
-      params.firstAction,
+      body.firstAction,
     )}, second_action=${JSON.stringify(
-      params.secondAction,
+      body.secondAction,
     )}${optionalParamsToString([
-      { name: `start_date`, param: params.startDate },
-      { name: `end_date`, param: params.endDate },
-      { name: `periods`, param: params.periods },
-      { name: `period_type`, param: params.periodType },
-      { name: `group_by`, param: params.groupBy },
+      { name: `start_date`, param: body.startDate },
+      { name: `end_date`, param: body.endDate },
+      { name: `periods`, param: body.periods },
+      { name: `period_type`, param: body.periodType },
+      { name: `group_by`, param: body.groupBy },
     ])}) }}`
     return this.runSql(query)
   }

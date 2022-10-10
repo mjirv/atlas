@@ -2,7 +2,7 @@ import { FlowsData } from '@/types/FlowsData'
 import { ResponsiveSankey, DefaultNode, DefaultLink } from '@nivo/sankey'
 import { useMemo } from 'react'
 
-const Flows = ({ data }: { data: FlowsData }) => {
+const FlowsVisualization = ({ data }: { data: FlowsData }) => {
   /*
   [        
     {
@@ -31,6 +31,8 @@ const Flows = ({ data }: { data: FlowsData }) => {
         linkObject[`${index}. ${event}`] =
           linkObject[`${index}. ${event}`] || {}
         if (index > 0) {
+          linkObject[`${index - 1}. ${eventList[index - 1][1]}`] =
+            linkObject[`${index - 1}. ${eventList[index - 1][1]}`] || {}
           linkObject[`${index - 1}. ${eventList[index - 1][1]}`][
             `${index}. ${event}`
           ] =
@@ -114,4 +116,4 @@ const Flows = ({ data }: { data: FlowsData }) => {
   )
 }
 
-export default Flows
+export default FlowsVisualization
