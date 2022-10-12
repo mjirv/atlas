@@ -36,7 +36,7 @@ const Retention = ({ data }: { data: RetentionData }) => {
         stacked: true,
         reverse: false,
       }}
-      yFormat=" >-.2f"
+      yFormat=" >-.1%"
       curve="natural"
       axisTop={null}
       axisRight={null}
@@ -51,16 +51,19 @@ const Retention = ({ data }: { data: RetentionData }) => {
       axisLeft={{
         tickSize: 5,
         tickPadding: 5,
-        tickRotation: 0,
-        legend: `percent retained`,
-        legendOffset: -40,
+        tickRotation: 45,
+        legend: `percent retained on or after`,
+        legendOffset: -50,
         legendPosition: `middle`,
+        format: ` >-.1%`,
       }}
       pointSize={10}
       pointColor={{ theme: `background` }}
       pointBorderWidth={2}
       pointBorderColor={{ from: `serieColor` }}
       pointLabelYOffset={-12}
+      enablePointLabel={true}
+      lineWidth={3}
       useMesh={true}
       legends={[
         {

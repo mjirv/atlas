@@ -61,7 +61,10 @@ export default function Report() {
     const columnHelper = createColumnHelper<Data[0]>()
     const columns = Object.keys(data[0]).map((key) =>
       columnHelper.accessor(key, {
-        cell: (info) => info.getValue(),
+        cell: (info) =>
+          key.includes(`pct_`) && info.getValue()
+            ? (parseFloat(info.getValue() as string) * 100).toFixed(1) + `%`
+            : info.getValue(),
       }),
     )
 
@@ -85,7 +88,13 @@ export default function Report() {
   return (
     <Flex minHeight="100vh" flexDir="column" gap="10px">
       <MenuNav />
-      <Container maxWidth={`100%`} margin="20px 0">
+      <Container
+        maxWidth={`100%`}
+        minHeight={`100vh`}
+        margin="20px 0"
+        display="flex"
+        flexDirection={`column`}
+      >
         {!!eventStreams ? (
           <VisualizationForm
             reportType={reportType as ReportType}
