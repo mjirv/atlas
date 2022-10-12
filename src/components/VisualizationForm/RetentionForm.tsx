@@ -16,25 +16,32 @@ const RetentionForm = (params: Params): JSX.Element => {
   )
   const [eventType, setEventType] = useState(query?.firstAction)
   const [startDate, setStartDate] = useState(query?.startDate)
+  const [endDate, setEndDate] = useState(query?.endDate)
 
   const handleSetEventType = (e: ChangeEvent<HTMLSelectElement>) => {
     setEventType(e.target.value)
   }
 
   const handleSetStartDate = (e: ChangeEvent<HTMLInputElement>) => {
-    setStartDate(new Date(e.target.value))
+    setStartDate(e.target.value)
   }
 
-  const valid = selectedEventStream?.eventStream && eventType && startDate
+  const handleSetEndDate = (e: ChangeEvent<HTMLInputElement>) => {
+    setEndDate(e.target.value)
+  }
+
+  const valid =
+    selectedEventStream?.eventStream && eventType && startDate && endDate
 
   const payload: RetentionRequestBody = useMemo(
     () => ({
       eventStream: selectedEventStream?.eventStream as string,
       firstAction: eventType as string,
       secondAction: eventType as string,
-      startDate: startDate,
+      startDate: startDate as string,
+      endDate: endDate as string,
     }),
-    [selectedEventStream, eventType, startDate],
+    [selectedEventStream, eventType, startDate, endDate],
   )
 
   const onSubmit = useCallback(() => {
@@ -56,6 +63,7 @@ const RetentionForm = (params: Params): JSX.Element => {
         label="Event type"
         placeholder="Select event type"
       />
+      <FormLabel>Initial events between:</FormLabel>
       <FormControl id="start-date" isRequired>
         <FormLabel>Start date</FormLabel>
         <Input
@@ -63,7 +71,17 @@ const RetentionForm = (params: Params): JSX.Element => {
           size="md"
           type={`date`}
           onChange={handleSetStartDate}
-          value={startDate?.toISOString().split(`T`)[0]}
+          value={startDate?.split(`T`)[0]}
+        />
+      </FormControl>
+      <FormControl id="end-date" isRequired>
+        <FormLabel>End date</FormLabel>
+        <Input
+          placeholder="Select end date"
+          size="md"
+          type={`date`}
+          onChange={handleSetEndDate}
+          value={endDate?.split(`T`)[0]}
         />
       </FormControl>
       <Button onClick={onSubmit} disabled={!valid}>

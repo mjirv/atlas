@@ -71,9 +71,9 @@ class DbtSQLService implements SQLService {
       body.firstAction,
     )}, second_action=${JSON.stringify(
       body.secondAction,
+    )}, start_date=${JSON.stringify(body.startDate)}, end_date=${JSON.stringify(
+      body.endDate,
     )}${optionalParamsToString([
-      { name: `start_date`, param: body.startDate },
-      { name: `end_date`, param: body.endDate },
       { name: `periods`, param: body.periods },
       { name: `period_type`, param: body.periodType },
       { name: `group_by`, param: body.groupBy },

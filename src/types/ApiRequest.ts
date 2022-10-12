@@ -15,8 +15,8 @@ export type RetentionRequestBody = {
   eventStream: string
   firstAction: string
   secondAction: string
-  startDate?: Date
-  endDate?: Date
+  startDate: string
+  endDate: string
   periods?: number[]
   periodType?: string
   groupBy?: string
