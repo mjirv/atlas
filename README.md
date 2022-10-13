@@ -1,7 +1,7 @@
 <h1 align="center">Atlas</h1>
 <div align="center"><strong>Open-source product analytics for the modern data stack</strong></div>
 <div align="center">Atlas replaces Mixpanel or Amplitude and lets you analyze funnels, retention, and user flows.</div>
-<div align="center"><a href="https://atlas-demo.onrender.com/reports/funnel?query=eyJzdGVwcyI6WyJwbGFjZWQiLCJjb21wbGV0ZWQiLCJyZXR1cm5lZCJdLCJldmVudFN0cmVhbSI6InJlZignb3JkZXJzJykifQ%3D%3D">View live demo</a></div>
+<div align="center"><a href="https://atlas-demo.onrender.com/reports/funnel?query=eyJzdGVwcyI6WyJwbGFjZWQiLCJjb21wbGV0ZWQiLCJyZXR1cm5lZCJdLCJldmVudFN0cmVhbSI6InJlZignb3JkZXJzJykifQ%3D%3D" target="_blank">View live demo</a></div>
 
 <br />
 
@@ -30,6 +30,7 @@
 
 ### Requirements
 * A [dbt project](https://getdbt.com) (running locally) with the [dbt_product_analytics](https://hub.getdbt.com/mjirv/dbt_product_analytics/latest/) package instealled
+* At least one dbt model using `dbt_product_analytics.event_stream()` tagged with the tag `event_stream` (see <a href="https://github.com/Sightglass-Data/atlas-demo/blob/main/atlas_demo_dbt/models/orders.sql" target="_blank">this link</a> for an example)
 * NodeJS
 
 ### Development
