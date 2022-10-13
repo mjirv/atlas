@@ -1,6 +1,16 @@
 import { dbtEventStreamService } from '@/services/EventStreamService'
 import { EventStreamResponse } from '@/types/ApiResponse'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { createClient } from 'redis'
+
+const redis = process.env.REDIS_URL
+  ? createClient({
+      url: process.env.REDIS_URL,
+    })
+  : // eslint-disable-next-line @typescript-eslint/no-empty-function
+    { get: () => {}, set: () => {}, connect: () => {}, on: () => {} }
+redis.on(`error`, (err) => console.error(`Redis client error`, err))
+redis.connect()
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,6 +21,10 @@ export default async function handler(
   }
 
   try {
+    const cached = await redis.get(`eventStreams`)
+    if (cached) {
+      return res.status(200).json(JSON.parse(cached) as EventStreamResponse)
+    }
     const eventStreams = await dbtEventStreamService.listEventStreams()
     const body = await Promise.all(
       eventStreams.map(async (eventStream) => ({
@@ -18,6 +32,7 @@ export default async function handler(
         eventTypes: await eventStream.getEventTypes(),
       })),
     )
+    redis.set(`eventStreams`, JSON.stringify(body))
     return res.status(200).json(body)
   } catch (error) {
     console.error(error)
