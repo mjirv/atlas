@@ -1,7 +1,7 @@
 <h1 align="center">Atlas</h1>
-
 <div align="center"><strong>Open-source product analytics for the modern data stack</strong></div>
 <div align="center">Atlas replaces Mixpanel or Amplitude and lets you analyze funnels, retention, and user flows.</div>
+<div align="center"><a href="https://atlas-demo.onrender.com/reports/funnel?query=eyJzdGVwcyI6WyJwbGFjZWQiLCJjb21wbGV0ZWQiLCJyZXR1cm5lZCJdLCJldmVudFN0cmVhbSI6InJlZignb3JkZXJzJykifQ%3D%3D">View live demo</a></div>
 
 <br />
 
@@ -17,7 +17,7 @@
 
 <br />
 
-![Screen Shot 2022-09-26 at 7 43 16 PM](https://user-images.githubusercontent.com/5953854/192400417-6c73e781-1207-46b2-b82b-33279cac5f2e.png)
+![Screen Shot 2022-10-12 at 10 53 35 PM](https://user-images.githubusercontent.com/5953854/195488144-a7a0a2ea-4eaa-4151-a832-46a94e4f7a9a.png)
 
 <br />
 
