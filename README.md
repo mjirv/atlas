@@ -16,9 +16,7 @@
 </div>
 
 <br />
-
-![Screen Shot 2022-10-12 at 10 53 35 PM](https://user-images.githubusercontent.com/5953854/195488144-a7a0a2ea-4eaa-4151-a832-46a94e4f7a9a.png)
-
+<video src='https://user-images.githubusercontent.com/5953854/195661289-66720386-4778-4d7c-8d67-fc565f9ef5ae.mp4'></video>
 <br />
 
 ## Features
