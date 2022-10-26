@@ -1,3 +1,4 @@
+import useStartAndEndDates from '@/hooks/useStartAndEndDate'
 import { FunnelRequestBody } from '@/types'
 import { EventStreamResponse } from '@/types/ApiResponse'
 import { DeleteIcon } from '@chakra-ui/icons'
@@ -5,6 +6,7 @@ import { Button, Flex } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import SelectEvent from './SelectEvent'
 import SelectEventStream from './SelectEventStream'
+import StartAndEndDates from './StartAndEndDates'
 import { FormParams } from './types/FormParams'
 
 type Params = FormParams & { query: FunnelRequestBody | undefined }
@@ -12,6 +14,8 @@ type Params = FormParams & { query: FunnelRequestBody | undefined }
 const FunnelForm = (params: Params): JSX.Element => {
   const { eventStreams, handleSubmit, query } = params
   const [steps, setSteps] = useState<string[]>(query?.steps || [])
+  const { startDate, endDate, handleSetStartDate, handleSetEndDate } =
+    useStartAndEndDates(query)
 
   const findEventStreamByName = useCallback(
     (eventStreamName: string | undefined) =>
@@ -96,6 +100,12 @@ const FunnelForm = (params: Params): JSX.Element => {
         eventStream={selectedEventStream}
         selectedEvent={``}
         handleSelectEvent={(e) => setSteps([...steps, e.target.value])}
+      />
+      <StartAndEndDates
+        startDate={startDate}
+        endDate={endDate}
+        handleSetStartDate={handleSetStartDate}
+        handleSetEndDate={handleSetEndDate}
       />
       <Button onClick={onSubmit} disabled={!valid}>
         Run Query

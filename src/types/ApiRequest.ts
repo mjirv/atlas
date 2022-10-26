@@ -1,6 +1,8 @@
 export type FunnelRequestBody = {
   steps: string[]
   eventStream: string
+  startDate?: string
+  endDate?: string
 }
 
 export type FlowsRequestBody = {
@@ -9,14 +11,16 @@ export type FlowsRequestBody = {
   nEventsFrom?: number
   beforeOrAfter?: 'before' | 'after'
   topN?: number
+  startDate?: string
+  endDate?: string
 }
 
 export type RetentionRequestBody = {
   eventStream: string
   firstAction: string
   secondAction: string
-  startDate: string
-  endDate: string
+  startDate?: string
+  endDate?: string
   periods?: number[]
   periodType?: string
   groupBy?: string

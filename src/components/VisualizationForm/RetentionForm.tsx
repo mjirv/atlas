@@ -1,9 +1,11 @@
 import useEventStreams from '@/hooks/useEventStreams'
+import useStartAndEndDates from '@/hooks/useStartAndEndDate'
 import { RetentionRequestBody } from '@/types'
-import { Button, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import SelectEvent from './SelectEvent'
 import SelectEventStream from './SelectEventStream'
+import StartAndEndDates from './StartAndEndDates'
 import { FormParams } from './types/FormParams'
 
 type Params = FormParams & { query: RetentionRequestBody | undefined }
@@ -15,23 +17,13 @@ const RetentionForm = (params: Params): JSX.Element => {
     query?.eventStream,
   )
   const [eventType, setEventType] = useState(query?.firstAction)
-  const [startDate, setStartDate] = useState(query?.startDate)
-  const [endDate, setEndDate] = useState(query?.endDate)
-
   const handleSetEventType = (e: ChangeEvent<HTMLSelectElement>) => {
     setEventType(e.target.value)
   }
+  const { startDate, endDate, handleSetStartDate, handleSetEndDate } =
+    useStartAndEndDates(query)
 
-  const handleSetStartDate = (e: ChangeEvent<HTMLInputElement>) => {
-    setStartDate(e.target.value)
-  }
-
-  const handleSetEndDate = (e: ChangeEvent<HTMLInputElement>) => {
-    setEndDate(e.target.value)
-  }
-
-  const valid =
-    selectedEventStream?.eventStream && eventType && startDate && endDate
+  const valid = selectedEventStream?.eventStream && eventType
 
   const payload: RetentionRequestBody = useMemo(
     () => ({
@@ -63,27 +55,12 @@ const RetentionForm = (params: Params): JSX.Element => {
         label="Event type"
         placeholder="Select event type"
       />
-      <FormLabel>Initial events between:</FormLabel>
-      <FormControl id="start-date" isRequired>
-        <FormLabel>Start date</FormLabel>
-        <Input
-          placeholder="Select start date"
-          size="md"
-          type={`date`}
-          onChange={handleSetStartDate}
-          value={startDate?.split(`T`)[0]}
-        />
-      </FormControl>
-      <FormControl id="end-date" isRequired>
-        <FormLabel>End date</FormLabel>
-        <Input
-          placeholder="Select end date"
-          size="md"
-          type={`date`}
-          onChange={handleSetEndDate}
-          value={endDate?.split(`T`)[0]}
-        />
-      </FormControl>
+      <StartAndEndDates
+        startDate={startDate}
+        endDate={endDate}
+        handleSetStartDate={handleSetStartDate}
+        handleSetEndDate={handleSetEndDate}
+      />
       <Button onClick={onSubmit} disabled={!valid}>
         Run Query
       </Button>

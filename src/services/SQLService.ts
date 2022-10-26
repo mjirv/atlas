@@ -47,7 +47,10 @@ class DbtSQLService implements SQLService {
   runFunnel = async (body: FunnelRequestBody) => {
     const query = `{{ dbt_product_analytics.funnel(steps=${JSON.stringify(
       body.steps,
-    )}, event_stream=${body.eventStream}) }}`
+    )}, event_stream=${body.eventStream}${optionalParamsToString([
+      { name: `start_date`, param: body.startDate },
+      { name: `end_date`, param: body.endDate },
+    ])}) }}`
     return this.runSql(query)
   }
 
@@ -60,6 +63,8 @@ class DbtSQLService implements SQLService {
       { name: `n_events_from`, param: body.nEventsFrom },
       { name: `before_or_after`, param: body.beforeOrAfter },
       { name: `top_n`, param: body.topN },
+      { name: `start_date`, param: body.startDate },
+      { name: `end_date`, param: body.endDate },
     ])}) }}`
     return this.runSql(query)
   }
@@ -71,12 +76,12 @@ class DbtSQLService implements SQLService {
       body.firstAction,
     )}, second_action=${JSON.stringify(
       body.secondAction,
-    )}, start_date=${JSON.stringify(body.startDate)}, end_date=${JSON.stringify(
-      body.endDate,
     )}${optionalParamsToString([
       { name: `periods`, param: body.periods },
       { name: `period_type`, param: body.periodType },
       { name: `group_by`, param: body.groupBy },
+      { name: `start_date`, param: body.startDate },
+      { name: `end_date`, param: body.endDate },
     ])}) }}`
     return this.runSql(query)
   }
