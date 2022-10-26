@@ -29,7 +29,7 @@
 ## Quick Start
 
 ### Requirements
-* A [dbt project](https://getdbt.com) (running locally) with the [dbt_product_analytics](https://hub.getdbt.com/mjirv/dbt_product_analytics/latest/) package instealled
+* A [dbt project](https://getdbt.com) (running locally) with the [dbt_product_analytics](https://hub.getdbt.com/mjirv/dbt_product_analytics/latest/) package instealled (>= v 0.3.1)
 * At least one dbt model using `dbt_product_analytics.event_stream()` tagged with the tag `event_stream` (see <a href="https://github.com/Sightglass-Data/atlas-demo/blob/main/atlas_demo_dbt/models/orders.sql" target="_blank">this link</a> for an example)
 * NodeJS
 
