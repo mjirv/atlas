@@ -1,3 +1,4 @@
+import useStartAndEndDates from '@/hooks/useStartAndEndDate'
 import { FlowsRequestBody } from '@/types'
 import { EventStreamResponse } from '@/types/ApiResponse'
 import {
@@ -17,6 +18,7 @@ import {
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import SelectEvent from './SelectEvent'
 import SelectEventStream from './SelectEventStream'
+import StartAndEndDates from './StartAndEndDates'
 import { FormParams } from './types/FormParams'
 
 type Params = FormParams & { query: FlowsRequestBody | undefined }
@@ -36,6 +38,8 @@ const FlowsForm = (params: Params): JSX.Element => {
   const [selectedEventStream, setSelectedEventStream] = useState<
     EventStreamResponse[0] | undefined
   >(findEventStreamByName(query?.eventStream))
+  const { startDate, endDate, handleSetStartDate, handleSetEndDate } =
+    useStartAndEndDates(query)
 
   useEffect(() => {
     if (query) {
@@ -157,6 +161,12 @@ const FlowsForm = (params: Params): JSX.Element => {
           </NumberInputStepper>
         </NumberInput>
       </FormControl>
+      <StartAndEndDates
+        startDate={startDate}
+        endDate={endDate}
+        handleSetStartDate={handleSetStartDate}
+        handleSetEndDate={handleSetEndDate}
+      />
       <Button onClick={onSubmit} disabled={!valid}>
         Run Query
       </Button>
