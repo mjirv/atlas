@@ -11,7 +11,7 @@ type Params = {
 
 const StartAndEndDates = (params: Params) => {
   return (
-    <>
+    <FormControl id="date-control" display="flex">
       <FormLabel>Events between:</FormLabel>
       <FormControl id="start-date" isRequired={params.required}>
         <FormLabel>Start date</FormLabel>
@@ -33,7 +33,7 @@ const StartAndEndDates = (params: Params) => {
           value={params.endDate?.split(`T`)[0]}
         />
       </FormControl>
-    </>
+    </FormControl>
   )
 }
 

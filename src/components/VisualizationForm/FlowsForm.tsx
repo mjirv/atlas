@@ -2,10 +2,12 @@ import useStartAndEndDates from '@/hooks/useStartAndEndDate'
 import { FlowsRequestBody } from '@/types'
 import { EventStreamResponse } from '@/types/ApiResponse'
 import {
+  Box,
   Button,
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -104,7 +106,7 @@ const FlowsForm = (params: Params): JSX.Element => {
   }, [handleSubmit, payload])
 
   return (
-    <Flex gap="5px" flexWrap="wrap">
+    <Flex flexDirection="row" gap="5px" flexWrap="wrap">
       <SelectEventStream
         eventStreams={eventStreams}
         selectedEventStream={selectedEventStream?.eventStream}
@@ -118,7 +120,7 @@ const FlowsForm = (params: Params): JSX.Element => {
         selectedEvent={primaryEvent}
         handleSelectEvent={handleSetPrimaryEvent}
       />
-      <FormControl id="n-events">
+      <FormControl id="n-events" display="flex">
         <FormLabel>Number of events</FormLabel>
         <NumberInput
           min={1}
@@ -134,7 +136,7 @@ const FlowsForm = (params: Params): JSX.Element => {
           </NumberInputStepper>
         </NumberInput>
       </FormControl>
-      <FormControl id="before-or-after">
+      <FormControl id="before-or-after" display="flex">
         <FormLabel>Before or after</FormLabel>
         <RadioGroup onChange={handleSetBeforeOrAfter} value={beforeOrAfter}>
           <Stack direction="row">
@@ -143,7 +145,7 @@ const FlowsForm = (params: Params): JSX.Element => {
           </Stack>
         </RadioGroup>
       </FormControl>
-      <FormControl id="n-flows">
+      <FormControl id="n-flows" display="flex">
         <FormLabel>
           Top <i>n</i> paths
         </FormLabel>
@@ -167,9 +169,11 @@ const FlowsForm = (params: Params): JSX.Element => {
         handleSetStartDate={handleSetStartDate}
         handleSetEndDate={handleSetEndDate}
       />
-      <Button onClick={onSubmit} disabled={!valid}>
-        Run Query
-      </Button>
+      <FormControl id="submit-control" display="flex">
+        <Button onClick={onSubmit} colorScheme="green" disabled={!valid}>
+          Run Query
+        </Button>
+      </FormControl>
     </Flex>
   )
 }

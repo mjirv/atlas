@@ -13,7 +13,7 @@ const SelectEventStream = ({
   selectedEventStream,
   onChange,
 }: Params): JSX.Element => (
-  <FormControl id="event-stream" isRequired>
+  <FormControl id="event-stream" display="flex" isRequired>
     <FormLabel>Event stream</FormLabel>
     <Select
       placeholder="Select event stream"
