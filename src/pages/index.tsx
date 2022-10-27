@@ -9,10 +9,10 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>TypeScript starter for Next.js</title>
+        <title>Atlas</title>
         <meta
           name="description"
-          content="TypeScript starter for Next.js that includes all you need to build amazing apps"
+          content="Product analytics for the modern data stack"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

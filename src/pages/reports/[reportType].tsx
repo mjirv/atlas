@@ -27,6 +27,7 @@ import CenteredSpinner from '@/components/Loading/CenteredSpinner'
 import VisualizationForm from '@/components/VisualizationForm'
 import { EventStreamContext } from '@/components/EventStreamsProvider'
 import FormSkeleton from '@/components/Loading/FormSkeleton'
+import Head from 'next/head'
 
 type Data = FunnelData | FlowsData | RetentionData
 
@@ -98,7 +99,15 @@ export default function Report() {
 
   return (
     <Flex minHeight="100vh" flexDir="column" gap="10px">
-      <MenuNav />
+      <Head>
+        <title>Atlas</title>
+        <meta
+          name="description"
+          content="Product analytics for the modern data stack"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <MenuNav selected={reportType as string} />
       <Container
         maxWidth={`100%`}
         minHeight={`100vh`}
