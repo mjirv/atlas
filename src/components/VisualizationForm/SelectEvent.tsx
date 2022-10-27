@@ -13,7 +13,7 @@ type Params = {
 }
 
 const SelectEvent = (params: Params): JSX.Element => (
-  <FormControl id={params.id} isRequired={params.required}>
+  <FormControl id={params.id} display="flex" isRequired={params.required}>
     {params.label && <FormLabel>{params.label}</FormLabel>}
     <Select
       placeholder={params.placeholder ?? `Select primary event`}

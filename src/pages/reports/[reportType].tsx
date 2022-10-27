@@ -1,5 +1,14 @@
 import { DataTable } from '@/components/DataTable'
-import { Box, Container, Flex } from '@chakra-ui/react'
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Container,
+  Flex,
+} from '@chakra-ui/react'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -18,6 +27,7 @@ import CenteredSpinner from '@/components/Loading/CenteredSpinner'
 import VisualizationForm from '@/components/VisualizationForm'
 import { EventStreamContext } from '@/components/EventStreamsProvider'
 import FormSkeleton from '@/components/Loading/FormSkeleton'
+import Head from 'next/head'
 
 type Data = FunnelData | FlowsData | RetentionData
 
@@ -73,6 +83,8 @@ export default function Report() {
     setLoading(false)
   }, [query, reportType])
 
+  const shouldShowVisualization = !isLoading && columns && data && eventStreams
+
   useEffect(() => {
     query && fetchData()
   }, [fetchData, query])
@@ -87,7 +99,15 @@ export default function Report() {
 
   return (
     <Flex minHeight="100vh" flexDir="column" gap="10px">
-      <MenuNav />
+      <Head>
+        <title>Atlas</title>
+        <meta
+          name="description"
+          content="Product analytics for the modern data stack"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <MenuNav selected={reportType as string} />
       <Container
         maxWidth={`100%`}
         minHeight={`100vh`}
@@ -95,36 +115,58 @@ export default function Report() {
         display="flex"
         flexDirection={`column`}
       >
-        {!!eventStreams ? (
-          <VisualizationForm
-            reportType={reportType as ReportType}
-            query={queryObject}
-            handleSubmit={handleSubmit}
-            eventStreams={eventStreams}
-          />
-        ) : (
-          <FormSkeleton />
-        )}
-        {(query || !eventStreams) &&
-          (!isLoading && columns && data && eventStreams ? (
-            <Box width="100%" height="100%">
-              <Box
-                style={{
-                  width: `100%`,
-                  height: `500px`,
-                  display: `block`,
-                }}
-              >
-                <Visualization
+        <Accordion defaultIndex={[0, 1]} allowMultiple allowToggle>
+          {!!eventStreams ? (
+            <AccordionItem>
+              <AccordionButton>
+                <AccordionIcon />
+                <Box flex="1" textAlign="left">
+                  Query
+                </Box>
+              </AccordionButton>
+              <AccordionPanel pb={4}>
+                <VisualizationForm
                   reportType={reportType as ReportType}
-                  data={data}
+                  query={queryObject}
+                  handleSubmit={handleSubmit}
+                  eventStreams={eventStreams}
                 />
-              </Box>
-              <DataTable columns={columns} data={data} />
-            </Box>
+              </AccordionPanel>
+            </AccordionItem>
           ) : (
-            <CenteredSpinner />
-          ))}
+            <FormSkeleton />
+          )}
+          {(query || !eventStreams) &&
+            (shouldShowVisualization ? (
+              <AccordionItem>
+                <AccordionButton>
+                  <AccordionIcon />
+                  <Box flex="1" textAlign="left">
+                    Result
+                  </Box>
+                </AccordionButton>
+                <AccordionPanel pb={4}>
+                  <Box width="100%" height="100%">
+                    <Box
+                      style={{
+                        width: `100%`,
+                        height: `500px`,
+                        display: `block`,
+                      }}
+                    >
+                      <Visualization
+                        reportType={reportType as ReportType}
+                        data={data}
+                      />
+                    </Box>
+                    <DataTable columns={columns} data={data} />
+                  </Box>
+                </AccordionPanel>
+              </AccordionItem>
+            ) : (
+              <CenteredSpinner />
+            ))}
+        </Accordion>
       </Container>
     </Flex>
   )

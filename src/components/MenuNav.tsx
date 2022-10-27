@@ -1,5 +1,9 @@
 import { Flex, Button, Link, Tooltip } from '@chakra-ui/react'
 
+type Props = {
+  selected?: string
+}
+
 const MenuButton = ({ ...params }) => {
   return (
     <Button
@@ -12,7 +16,7 @@ const MenuButton = ({ ...params }) => {
   )
 }
 
-const MenuNav = () => {
+const MenuNav = ({ selected }: Props) => {
   return (
     <Flex
       gap={`6px`}
@@ -23,9 +27,24 @@ const MenuNav = () => {
       <MenuButton href="/" variant="link" flex={2} fontSize="2rem">
         Atlas
       </MenuButton>
-      <MenuButton href="/reports/funnel">Funnel</MenuButton>
-      <MenuButton href="/reports/flows">Flows</MenuButton>
-      <MenuButton href="/reports/retention">Retention</MenuButton>
+      <MenuButton
+        href="/reports/funnel"
+        variant={selected === `funnel` ? `solid` : `outline`}
+      >
+        Funnel
+      </MenuButton>
+      <MenuButton
+        href="/reports/flows"
+        variant={selected === `flows` ? `solid` : `outline`}
+      >
+        Flows
+      </MenuButton>
+      <MenuButton
+        href="/reports/retention"
+        variant={selected === `retention` ? `solid` : `outline`}
+      >
+        Retention
+      </MenuButton>
       <Tooltip
         label="Coming soon!"
         aria-label="Coming soon"

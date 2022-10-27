@@ -41,7 +41,7 @@ const RetentionForm = (params: Params): JSX.Element => {
   }, [handleSubmit, payload, valid])
 
   return (
-    <Flex gap="5px" flexWrap="wrap">
+    <Flex flexDirection="row" gap="5px" flexWrap="wrap">
       <SelectEventStream
         eventStreams={eventStreams}
         selectedEventStream={selectedEventStream?.eventStream}
@@ -61,7 +61,7 @@ const RetentionForm = (params: Params): JSX.Element => {
         handleSetStartDate={handleSetStartDate}
         handleSetEndDate={handleSetEndDate}
       />
-      <Button onClick={onSubmit} disabled={!valid}>
+      <Button onClick={onSubmit} colorScheme="green" disabled={!valid}>
         Run Query
       </Button>
     </Flex>
